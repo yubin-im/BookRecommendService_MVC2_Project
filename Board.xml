@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC 
+	"-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap>
+ 
+ <cacheModel type="LRU" id="guestCashe">
+ 	<flushInterval hours="24"/>
+ 	<flushOnExecute statement="insertGuest"/>
+ 	<property name="size" value="10"/>
+ </cacheModel>
+ 
+ 
+ <!-- typeAlias : 해당 클래스에 별명 지정  -->
+ <typeAlias alias="board" type="kr.co.mycom.board.model.BoardDTO" />
+ 
+ <insert id="insertBoard" parameterClass="board">
+ 	insert into board(num, name, email, pwd, subject, content, regdate, hit, parent, sort, tab)
+	values( (select NVL(max(num),0)+1 from board), #name#,#email#,#pwd#,#subject#,#content#,SYSDATE,0,(select NVL(max(num),0)+1 from board),0,0)
+ </insert> 
+ 
+ 
+ <resultMap class="board" id="boardResult">
+ 
+	<result property="num" column="num" />  	
+	<result property="name" column="name" />  	
+	<result property="email" column="email" />  	
+	<result property="pwd" column="pwd" />  	
+	<result property="subject" column="subject" />  	
+	<result property="content" column="content" />  	
+	<result property="regdate" column="regdate" />  	
+	<result property="hit" column="hit" />  	
+	<result property="parent" column="parent" />  	
+	<result property="sort" column="sort" />  	
+	<result property="tab" column="tab" />  	
+	
+ </resultMap>
+ 
+ <select id="getBoardList" parameterClass="hashmap" resultMap="boardResult">
+ 	select * from
+ 	 (select A.*,ROWNUM r from 
+ 	 	(select * from board order by parent desc, sort) A
+ 	 	)
+ 	 	where r >= #start# and r &lt;= #end#
+ </select> 
+ <!-- < 시작꺽쇠 사용하면 오류 발생  -->
+ 
+ <select id="getBoard" parameterClass="int" resultClass="board">
+ 	select * from board where num = #num#
+ </select> 
+ 
+ 
+ <update id = "updateBoard" parameterClass="board">
+     update board set name=#name#, email=#email#, subject=#subject#, content=#content#, regdate = sysdate 
+     where num = #num# and pwd = #pwd#
+ </update>
+ 
+ <delete id = "deleteBoard" parameterClass="board">
+     delete from board where num = #num# and pwd = #pwd#
+ </delete>
+
+  <update id = "updateHit" parameterClass="int">
+     update board set
+     	hit = hit + 1
+     where num = #num#
+ </update>
+ 
+ <select id="getBoardCount" resultClass="int">
+ 	select count(*) from board
+ </select>
+ 
+ <update id="updateSort" parameterClass="board">
+ 	update board set
+ 		sort = sort + 1
+ 	where parent = #parent# and sort >= #sort#  	
+ </update>
+ 
+  <insert id="insertReply" parameterClass="board">
+ 	insert into board(num, name, email, pwd, subject, content, regdate, hit, parent, sort, tab)
+	values( (select NVL(max(num),0)+1 from board), #name#,#email#,#pwd#,#subject#,#content#,SYSDATE,0,#parent#,#sort#,#tab#)
+ </insert> 
+ 
+</sqlMap>
