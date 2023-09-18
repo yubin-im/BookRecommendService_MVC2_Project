@@ -51,7 +51,7 @@ public class BooksDAO {
 		System.out.println(book);
 		
 		result.close();
-		conn.close();
+		stmt.close();
 		pool.releaseConnection(conn);
 		return books;
 	}

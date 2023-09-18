@@ -14,6 +14,6 @@
 	dto = dao.select(dto);
 	session.setAttribute("login", dto);
 %>
-<jsp:forward page="/main/main.html"/>
+<jsp:forward page="viewLogin.jsp"/>
 </body>
 </html>

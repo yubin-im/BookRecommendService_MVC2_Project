@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" errorPage="loginError.jsp"%>
+<jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login Error</title>
+    <title>Welcome</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,16 +23,16 @@
         }
 
         h1 {
-            color: #ff0000;
+            color: #333333;
         }
 
-        .error-message {
-            font-size: 18px;
+        .welcome-message {
+            font-size: 20px;
             margin-top: 10px;
-            color: #ff0000;
+            color: #007bff;
         }
 
-        .login-link {
+        .main-link {
             display: block;
             margin-top: 20px;
             font-size: 18px;
@@ -42,9 +43,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login Error</h1>
-        <p class="error-message">아이디와 비밀번호를 확인하신 후 다시 시도하세요.</p>
-        <a href="loginForm.html" class="login-link">로그인 창으로 돌아가기</a>
+        <h1>Welcome, <%= login.getName() %>!</h1>
+        <p class="welcome-message">안녕하세요! 환영합니다.</p>
+        <a href="<%=request.getContextPath() %>/main/main.jsp" class="main-link">메인으로 이동</a>
     </div>
 </body>
 </html>

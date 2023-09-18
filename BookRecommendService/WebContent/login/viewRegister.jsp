@@ -10,6 +10,6 @@
 </head>
 <body>
 <%=registerMsg %><br>
-<jsp:forward page="/main/main.html"/>
+<jsp:forward page="/main/main.jsp"/>
 </body>
 </html>
