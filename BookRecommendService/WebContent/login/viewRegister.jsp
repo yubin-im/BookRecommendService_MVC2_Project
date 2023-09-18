@@ -1,19 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<jsp:useBean id="dao" class="book.test.UsersDAO" scope="application"/>
+    pageEncoding="UTF-8" errorPage="registerError.jsp"%>
+<jsp:useBean id="registerMsg" type="java.lang.String" scope="request"/>
 <jsp:useBean id="dto" class="book.test.UsersDTO" scope="session"/>
-<jsp:setProperty property="*" name="dto"/>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>loginAction.jsp</title>
+<title>viewRegister.jsp</title>
 </head>
 <body>
-<%
-	dto = dao.select(dto);
-	session.setAttribute("login", dto);
-%>
+<%=registerMsg %><br>
 <jsp:forward page="/main/main.html"/>
 </body>
 </html>

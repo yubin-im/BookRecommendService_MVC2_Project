@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>loginError.jsp</title>
+<title>registerError.jsp</title>
 </head>
 <body>
-아이디와 비밀번호를 확인하신후 다시 시도하세요!<br>
-<a href="loginForm.html">로그인 창</a>
+아이디가 중복되었습니다.<br>
+<a href="registerForm.jsp">회원가입 창으로 이동</a>
 </body>
 </html>

@@ -1,17 +1,21 @@
 package book.test;
 
+import java.util.List;
+
 public class UsersDTO {
 	private String userID;
 	private String password;
 	private String name;
-	private String genre;
+	private String genre1;
+	private String genre2;
 	
-	public UsersDTO(String userID, String password, String name, String genre) {
+	public UsersDTO(String userID, String password, String name, String genre1, String genre2) {
 		super();
 		this.userID = userID;
 		this.password = password;
 		this.name = name;
-		this.genre = genre;
+		this.genre1 = genre1;
+		this.genre2 = genre2;
 	}
 	public UsersDTO(String userID, String password) {
 		super();
@@ -23,6 +27,7 @@ public class UsersDTO {
 	}
 
 	public String getUserID() {
+		System.out.println("DTO의 getUserID임 " + this.userID);
 		return userID;
 	}
 
@@ -34,8 +39,11 @@ public class UsersDTO {
 		return name;
 	}
 
-	public String getGenre() {
-		return genre;
+	public String getGenre1() {
+		return genre1;
+	}
+	public String getGenre2() {
+		return genre2;
 	}
 
 	public void setUserID(String userID) {
@@ -50,15 +58,17 @@ public class UsersDTO {
 		this.name = name;
 	}
 
-	public void setGenre(String genre) {
-		this.genre = genre;
+	public void setGenre1(String genre1) {
+		this.genre1 = genre1;
 	}
-
+	public void setGenre2(String genre2) {
+		this.genre2 = genre2;
+	}
 	@Override
 	public String toString() {
-		return "UsersDTO [userID=" + userID + ", password=" + password + ", name=" + name + ", genre=" + genre + "]";
+		return "UsersDTO [userID=" + userID + ", password=" + password + ", name=" + name + ", genre1=" + genre1
+				+ ", genre2=" + genre2 + "]";
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

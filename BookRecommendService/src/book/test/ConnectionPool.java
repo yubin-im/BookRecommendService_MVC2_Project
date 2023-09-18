@@ -65,7 +65,7 @@ public final class ConnectionPool {
     // Storage for the unused connections.
     private Vector free;
 
-  static final String jdbcclass = "oracle.jdbc.OracleDriver";   
+  static final String jdbcclass = "oracle.jdbc.driver.OracleDriver";   
  // Storage for the allocated connections.
     private Vector used;
 
