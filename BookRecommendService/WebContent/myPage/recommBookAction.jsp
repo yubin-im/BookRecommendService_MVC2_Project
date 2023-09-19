@@ -15,6 +15,7 @@
 <title>recommBookAction.jsp</title>
 </head>
 <body>
+
 <jsp:forward page="/myPage/viewRecommBooks.jsp"/>
 </body>
 </html>
