@@ -2,7 +2,7 @@
     pageEncoding="UTF-8" %>
 <%@ page import="book.test.*,java.util.Date" %>
 <jsp:useBean id="booksdao" class="book.test.BooksDAO" scope="application"/>
-<jsp:useBean id="booksdto" class="book.test.BooksDTO" scope="request"/>
+<jsp:useBean id="booksdto" class="book.test.BooksDTO" scope="session"/>
 <jsp:setProperty property="*" name="booksdto"/>
 <!-- 도서 상세 보기 -->
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
 int result = 0;
 BooksDTO book = booksdao.select(booksdto);
 System.out.println("도서 상세: " + book);
-request.setAttribute("book", book);
+session.setAttribute("book", book);
 %>
 <jsp:forward page="viewBookDetail.jsp"/>
 </head>

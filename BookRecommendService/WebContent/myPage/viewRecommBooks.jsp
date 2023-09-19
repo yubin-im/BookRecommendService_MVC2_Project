@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" errorPage="myPageError.jsp"%>
 <%@ page import="book.test.*"%>
@@ -56,7 +57,7 @@
         %>
             <tr>
                 <td><%=book.getBookID() %></td>
-                <td><%=book.getTitle() %></td>
+                <td><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle() %></a></td>
                 <td><%=book.getPublisher() %></td>
                 <td><%=book.getAuthors() %></td>
                 <td><%=book.getGenre() %></td>

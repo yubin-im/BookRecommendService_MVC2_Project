@@ -33,11 +33,19 @@
         }
 
         .main-link {
-            display: block;
+            display: inline-block;
             margin-top: 20px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
             font-size: 18px;
-            color: #007bff;
+            color: #fff;
             text-decoration: none;
+            cursor: pointer;
+        }
+        .main-link:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>

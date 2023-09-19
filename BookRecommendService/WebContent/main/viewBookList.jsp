@@ -37,34 +37,44 @@
 </style>
 </head>
 <body>
-	<table border="1">
-		<thead>
-			<tr>
-				<th>번호</th>
-				<th>도서 제목</th>
-				<th>출판사</th>
-				<th>저자</th>
-				<th>장르</th>
-				<th>조회수</th>
-			</tr>
-		</thead>
-		
-		<%
-		for(Object o: books) {
-			BooksDTO book = (BooksDTO)o;
-		%>
-			<tr>
-				<td><%=book.getBookID() %></td>
-				<td><a href="bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle()%></a></td>
-				<td><%=book.getPublisher() %></td>
-				<td><%=book.getAuthors() %></td>
-				<td><%=book.getGenre() %></td>
-				<td><%=book.getViews() %></td>
-			</tr>
-		<%
-		}
-		%>
-		
-	</table>
+   <h4>평균 별점이 높은 작품</h4>
+   
+   <div style="text-align: right;">
+        <form action="searchBooks.jsp" method="GET">
+            <label for="searchQuery">검색:</label>
+            <input type="text" id="searchQuery" name="query" placeholder="도서 제목 또는 저자 검색">
+            <button type="submit">검색</button>
+        </form>
+    </div>
+    
+   <table border="1">
+      <thead>
+         <tr>
+            <th>번호</th>
+            <th>도서 제목</th>
+            <th>출판사</th>
+            <th>저자</th>
+            <th>장르</th>
+            <th>조회수</th>
+         </tr>
+      </thead>
+      
+      <%
+      for(Object o: books) {
+         BooksDTO book = (BooksDTO)o;
+      %>
+         <tr>
+            <td><%=book.getBookID() %></td>
+            <td><a href="bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle()%></a></td>
+            <td><%=book.getPublisher() %></td>
+            <td><%=book.getAuthors() %></td>
+            <td><%=book.getGenre() %></td>
+            <td><%=book.getViews() %></td>
+         </tr>
+      <%
+      }
+      %>
+      
+   </table>
 </body>
 </html>
