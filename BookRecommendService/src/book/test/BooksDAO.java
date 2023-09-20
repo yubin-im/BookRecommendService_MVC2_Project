@@ -48,7 +48,6 @@ public class BooksDAO {
 					result.getInt("PRICE"), result.getInt("VIEWS"));
 			books.add(book);
 		}
-		System.out.println(book);
 		
 		result.close();
 		stmt.close();
@@ -99,4 +98,52 @@ public class BooksDAO {
 		pool.releaseConnection(conn);
 		return books;
 	}
+	
+	public ArrayList<BooksDTO> selectFavoriteBook(ArrayList<FavoriteDTO> favoriteList) throws SQLException{
+		Connection conn = pool.getConnection(); 
+		Statement stmt = conn.createStatement();
+		ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+		for(Object o : favoriteList) {
+			FavoriteDTO favor = (FavoriteDTO) o;
+			String sql = "select* from books where bookid = '" + favor.getBookID() + "'";
+			ResultSet result = stmt.executeQuery(sql);
+			BooksDTO book = null;
+			while(result.next()) {
+				book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+						result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+						result.getInt("PRICE"), result.getInt("VIEWS"));
+				books.add(book);
+			}
+			result.close();
+		}
+		stmt.close();
+		pool.releaseConnection(conn);
+		return books;
+		
+	}
+	// 통합 검색(도서 제목, 출판사, 저자, 장르) 메서드
+	   public ArrayList<BooksDTO> selectSearch(String searchText) throws SQLException {
+	      String sql = "select * from books where title like '%" + searchText + 
+	            "%' or authors like '%" + searchText + 
+	            "%' or publisher like '%" + searchText + 
+	            "%' or genre like '%" + searchText + "%'";
+	      Connection conn = pool.getConnection(); 
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
+	      
+	      BooksDTO book = null;
+	      ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+	      
+	      while(result.next()) {
+	         book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+	               result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+	               result.getInt("PRICE"), result.getInt("VIEWS"));
+	         books.add(book);
+	      }
+	      
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+	      return books;
+	   }
 }

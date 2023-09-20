@@ -1,13 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" errorPage="main.jsp"%>
-<%@ page import="book.test.*,java.util.Date" %>
+    pageEncoding="UTF-8" errorPage="mainError.jsp"%>
+<%@ page import="book.test.*, java.util.*" %>
 <jsp:useBean id="book" type="book.test.BooksDTO" scope="session"/>
+<jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
+<jsp:useBean id="favoriteDAO" class="book.test.FavoriteDAO" scope="page"/>
+<jsp:useBean id="favoriteDTO" class="book.test.FavoriteDTO" scope="page"/>
+<jsp:setProperty name="favoriteDTO" property="bookID" value="<%=book.getBookID() %>"/>
+<jsp:setProperty name="favoriteDTO" property="userID" value="<%=login.getUserID() %>"/>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <%
 request.setAttribute("book", book);
+boolean isBookInFavorites = favoriteDAO.check(favoriteDTO);
 %>
 <title>도서 상세 정보</title>
 <style>
@@ -45,6 +52,7 @@ request.setAttribute("book", book);
         cursor: pointer;
         font-size: 24px;
         padding: 0;
+        color: <%=(isBookInFavorites) ? "red" : "black"%>;
     }
 
     .heart-button:hover {
@@ -79,11 +87,8 @@ request.setAttribute("book", book);
 
     <script>
     function addToFavorites() {
-   	 window.location.href = "<%=request.getContextPath() %>/myPage/favoriteAction.jsp";
-       // 여기에서 찜 기능을 구현하거나 favoriteAction.jsp로 이동하는 로직을 추가할 수 있습니다.
-       // 예를 들어, AJAX 요청을 사용하여 서버에 찜 추가 요청을 보낼 수 있습니다.
-       // 또는 form을 사용하여 favoriteAction.jsp로 이동할 수 있습니다.
-       alert("도서를 찜 목록에 추가했습니다!");
+      	 window.location.href = "<%=request.getContextPath() %>/myPage/favoriteAction.jsp";
+      	 
         }
     </script>
 </body>

@@ -27,6 +27,7 @@ public class FavoriteDAO {
 			e.printStackTrace();
 		}
 	}
+	
 	public boolean select(FavoriteDTO input) throws SQLException {
 		boolean bool;
 		Connection conn = pool.getConnection();
@@ -53,6 +54,29 @@ public class FavoriteDAO {
 		pool.releaseConnection(conn);
 		return bool;
 	}
+	public boolean check(FavoriteDTO input) throws SQLException {
+		boolean bool;
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "select * from favorites where userid = '" + input.getUserID() + "'and bookID = '" + input.getBookID() + "'";
+		ResultSet result = stmt.executeQuery(sql);
+		FavoriteDTO favorite = null;
+		while (result.next()) {
+			favorite  = new FavoriteDTO(result.getString("userID"), result.getString("bookId"));
+		}
+		if(favorite == null) {
+			bool = false;
+		}
+		else {
+			bool = true;
+		}
+		System.out.println("favoriteDAO의 check : " + bool);
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bool;
+	}
+	
 	private void delete(FavoriteDTO input) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
@@ -62,6 +86,7 @@ public class FavoriteDAO {
 		pool.releaseConnection(conn);
 		System.out.println("여기는 favorite의 delete : " + result);
 	}
+	
 	public int insert(FavoriteDTO input) throws SQLException {
 		int result = 0;
 		Connection conn = pool.getConnection();
@@ -77,11 +102,22 @@ public class FavoriteDAO {
 		System.out.println("여기는 favoriteDAO의 insert :  " + result);
 		return result;
 	}
+	
 	public ArrayList<FavoriteDTO> selectAll(String UserID) throws SQLException{
-		ArrayList<FavoriteDTO> favorites = null;
+		ArrayList<FavoriteDTO> favorites = new ArrayList<FavoriteDTO>();
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		String sql = "SELECT * FROM favorites WHERE userid = '" + UserID + "';";
+		String sql = "SELECT * FROM favorites WHERE userid = '" + UserID + "'";
+		ResultSet result = stmt.executeQuery(sql);
+		FavoriteDTO favorite = null;
+		while(result.next()) {
+			favorite = new FavoriteDTO(result.getString("userID"), result.getString("bookId"));
+			favorites.add(favorite);
+		}
+		System.out.println("여기는 favoritesDAO의 selectALL : " + favorites);
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
 		return favorites;
 	}
 }
