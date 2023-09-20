@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class FavoriteDAO {
 	private static String url = "jdbc:oracle:thin:@localhost:1521:xe"; // database마다 url은 모두 다르다. 각 DB회사의 홈페이지에서 찾아야 함.
@@ -75,5 +76,12 @@ public class FavoriteDAO {
 		pool.releaseConnection(conn);
 		System.out.println("여기는 favoriteDAO의 insert :  " + result);
 		return result;
+	}
+	public ArrayList<FavoriteDTO> selectAll(String UserID) throws SQLException{
+		ArrayList<FavoriteDTO> favorites = null;
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "SELECT * FROM favorites WHERE userid = '" + UserID + "';";
+		return favorites;
 	}
 }

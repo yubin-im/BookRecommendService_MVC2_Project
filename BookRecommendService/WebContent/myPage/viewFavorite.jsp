@@ -42,7 +42,7 @@
     <h1>찜 결과</h1>
     <p><%= book.getTitle() %>이</p>
     <p><%=session.getAttribute("result") %></p>
-    <a href="<%=request.getContextPath() %>/myPage/viewFavoriteList.jsp">찜 목록으로 이동</a>
+    <a href="<%=request.getContextPath() %>/myPage/favoriteListAction.jsp">찜 목록으로 이동</a>
 </div>
 </body>
 </html>
