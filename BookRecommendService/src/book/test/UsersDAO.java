@@ -45,6 +45,23 @@ public class UsersDAO {
 		pool.releaseConnection(conn);
 		return users;
 	}
+	public String selectSecond(String input) throws SQLException {
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "select * from Users where userid = '" + input + "'";
+		ResultSet result = stmt.executeQuery(sql);
+		UsersDTO users = null;
+		while (result.next()) {
+			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
+					result.getString("genre1"), result.getString("genre2"));
+		}
+		String userName = users.getName();
+		System.out.println(users);
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return userName;
+	}
 	public boolean getSelect(String usersID) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();

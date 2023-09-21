@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 
 <frameset rows="20%, *">
-  <frame src="<%=request.getContextPath() %>/main/top.html" name="top">
-  <frameset cols="150, *">
-      <frame src="<%=request.getContextPath() %>/main/left.jsp" name="left">
-      <frame src="<%=request.getContextPath() %>/main/bookList.jsp" name="right">
+  		<frame src="<%=request.getContextPath() %>/main/top.html" name="top">
+  		<frameset cols="150, *">
+        <frame src="<%=request.getContextPath() %>/main/left.jsp" name="left">
+        <frame src="<%=request.getContextPath() %>/main/bookListPaging.jsp" name="right">
   </frameset>
 </frameset>

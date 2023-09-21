@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class BooksDAO {
 	private static String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -75,6 +78,26 @@ public class BooksDAO {
 		pool.releaseConnection(conn);
 		return book;
 	}
+	public String selectSecond(String input) throws SQLException {
+		String sql = "select * from books where bookid = '" + input + "'";
+		Connection conn = pool.getConnection(); 
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		BooksDTO book = null;
+		
+		while(result.next()) {
+			book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+					result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+					result.getInt("PRICE"), result.getInt("VIEWS"));
+		}
+		System.out.println(book);
+		String title = book.getTitle();
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return title;
+	}
 
 	// 사용자가 선택한 장르에 맞는 추천도서 데이터베이스에서 arraylist로 만드는 함수
 	public ArrayList<BooksDTO> selectRecommBook(String genre1, String genre2) throws SQLException{ 
@@ -144,6 +167,77 @@ public class BooksDAO {
 	      result.close();
 	      stmt.close();
 	      pool.releaseConnection(conn);
+	      return books;
+	   }
+	// 도서 전체 목록 페이징 함수
+	   public ArrayList<BooksDTO> selectAllPaging(HttpServletRequest request) throws SQLException {
+	      int pg = 1;
+	      String strPg = request.getParameter("pg");
+	      if (strPg != null) {
+	         pg = Integer.parseInt(strPg);
+	      }
+	      
+	      int rowSize = 20;
+	      int start = (pg * rowSize) - (rowSize - 1);
+	      int end = pg * rowSize;
+	      int total = 0; // 총 게시물수
+	      
+	      String sql = "select count(*) from books";
+	      Connection conn = pool.getConnection();
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
+
+	      if (result.next()) {
+	         total = result.getInt(1);
+	      }
+	      
+	      System.out.println("시작 : " + start + " 끝:" + end);
+	      System.out.println("글의 수 : " + total);
+
+	      int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+	      // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+	      System.out.println("페이지수 : " + allPage);
+
+	      int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
+	      int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
+	      // ((1-1)/10*10)
+	      int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
+	      if (toPage > allPage) { // 예) 20>17
+	         toPage = allPage;
+	      }
+
+	      HashMap map = new HashMap();
+
+	      map.put("start", start);
+	      map.put("end", end);
+	      
+	      BooksDTO book = null;
+	      ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+	      
+	      sql = "select * from " + 
+	            "(select A.*, ROWNUM r from " + 
+	            "(select * from books order by TO_NUMBER(bookid)) A) " + 
+	            "where r >= " + start + " and r <= " + end;
+	      result = stmt.executeQuery(sql);
+	      
+	      while(result.next()) {
+	         book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+	               result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+	               result.getInt("PRICE"), result.getInt("VIEWS"));
+	         books.add(book);
+	      }
+	      
+	      request.setAttribute("books", books);
+	      request.setAttribute("pg", pg);
+	      request.setAttribute("allPage", allPage);
+	      request.setAttribute("block", block);
+	      request.setAttribute("fromPage", fromPage);
+	      request.setAttribute("toPage", toPage);
+	      
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+	      
 	      return books;
 	   }
 }
