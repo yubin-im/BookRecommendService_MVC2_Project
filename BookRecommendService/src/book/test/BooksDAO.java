@@ -101,7 +101,7 @@ public class BooksDAO {
 
 	// 사용자가 선택한 장르에 맞는 추천도서 데이터베이스에서 arraylist로 만드는 함수
 	public ArrayList<BooksDTO> selectRecommBook(String genre1, String genre2) throws SQLException{ 
-		String sql = "SELECT * FROM books WHERE genre IN ('" + genre1 + "', '" + genre2 + "') ORDER BY VIEWS";
+		String sql = "SELECT * FROM books WHERE genre IN ('" + genre1 + "', '" + genre2 + "') ORDER BY TO_NUMBER(bookid)";
 		Connection conn = pool.getConnection(); 
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
@@ -238,6 +238,79 @@ public class BooksDAO {
 	      stmt.close();
 	      pool.releaseConnection(conn);
 	      
+	      return books;
+	   }
+	   
+	   
+	   // 추천 도서 목록 페이징 메서드
+	   public ArrayList<BooksDTO> selectRecommBookPaging(HttpServletRequest request, String genre1, String genre2) throws SQLException {
+	      int pg = 1;
+	      String strPg = request.getParameter("pg");
+	      if (strPg != null) {
+	         pg = Integer.parseInt(strPg);
+	      }
+
+	      int rowSize = 20;
+	      int start = (pg * rowSize) - (rowSize - 1);
+	      int end = pg * rowSize;
+	      int total = 0; // 총 추천 게시물수
+
+	      String sql = "select count(*) from books where genre in ('" + genre1 + "', '" + genre2 + "')";
+	      Connection conn = pool.getConnection();
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
+
+	      if (result.next()) {
+	         total = result.getInt(1);
+	      }
+	      
+	      System.out.println("시작 : " + start + " 끝:" + end);
+	      System.out.println("글의 수 : " + total);
+
+	      int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+	      // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+	      System.out.println("페이지수 : " + allPage);
+
+	      int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
+	      int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
+	      // ((1-1)/10*10)
+	      int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
+	      if (toPage > allPage) { // 예) 20>17
+	         toPage = allPage;
+	      }
+
+	      HashMap map = new HashMap();
+
+	      map.put("start", start);
+	      map.put("end", end);
+
+	      BooksDTO book = null;
+	      ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+	      
+	      sql = "select * from " + 
+	               "(select A.*, ROWNUM r from " + 
+	               "(select * from books where genre IN ('" + genre1 + "', '" + genre2 + "') order by TO_NUMBER(bookid)) A) " + 
+	               "where r >= " + start + " and r <= " + end;
+	      result = stmt.executeQuery(sql);
+	      
+	      while (result.next()) {
+	         book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+	               result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+	               result.getInt("PRICE"), result.getInt("VIEWS"));
+	         books.add(book);
+	      }
+
+	      request.setAttribute("books", books);
+	      request.setAttribute("pg", pg);
+	      request.setAttribute("allPage", allPage);
+	      request.setAttribute("block", block);
+	      request.setAttribute("fromPage", fromPage);
+	      request.setAttribute("toPage", toPage);
+
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+
 	      return books;
 	   }
 }

@@ -81,7 +81,7 @@
 <body>
     <ul>
 		<li><a href="<%=request.getContextPath() %>/main/bookListPaging.jsp" target="right">메인</a></li>
-        <li><a href="<%=request.getContextPath() %>/myPage/recommBookAction.jsp" target="right">추천도서</a></li>
+    	<li><a href="<%=request.getContextPath() %>/myPage/recommBookPaging.jsp" target="right">추천도서</a></li>
         <li><a href="<%=request.getContextPath() %>/myPage/viewMyPage.jsp" target="right">마이페이지</a></li>
         <!-- 로그아웃 링크 추가 -->
         <li><a href="<%=request.getContextPath() %>/login/logoutAction.jsp" target="_top">로그아웃</a></li>

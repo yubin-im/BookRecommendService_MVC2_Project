@@ -107,7 +107,7 @@ public class FavoriteDAO {
 		ArrayList<FavoriteDTO> favorites = new ArrayList<FavoriteDTO>();
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		String sql = "SELECT * FROM favorites WHERE userid = '" + UserID + "'";
+		String sql = "SELECT * FROM favorites WHERE userid = '" + UserID + "' order by to_number(bookid)";
 		ResultSet result = stmt.executeQuery(sql);
 		FavoriteDTO favorite = null;
 		while(result.next()) {

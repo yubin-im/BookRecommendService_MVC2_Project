@@ -134,6 +134,10 @@ public class ReviewDAO {
 	public int update(ReviewDTO input) throws SQLException {
 		String sql =  "update Reviews  set reviewContent="
 				+ "'"+input.getReviewContent()+"',"
+				+ "rank="
+				+ "'"+input.getRank() + "', "
+				+"reviewDate="
+				+"SYSDATE"
 				+ " where userID  = '" + input.getUserID() + "' and bookID = '" + input.getBookID() + "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();

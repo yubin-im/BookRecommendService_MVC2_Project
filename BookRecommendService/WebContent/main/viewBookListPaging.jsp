@@ -70,7 +70,6 @@
             <th>출판사</th>
             <th>저자</th>
             <th>장르</th>
-            <th>조회수</th>
          </tr>
       </thead>
       
@@ -85,7 +84,6 @@
             <td><%=book.getPublisher() %></td>
             <td><%=book.getAuthors() %></td>
             <td><%=book.getGenre() %></td>
-            <td><%=book.getViews() %></td>
          </tr>
       <%
       }

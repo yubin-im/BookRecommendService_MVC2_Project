@@ -76,6 +76,19 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     display: inline-block;
     font-size: 14px;
 	}
+	
+	.update-button {
+        background-color: #007bff; /* 파란색으로 변경 */
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+    }
 </style>
 </head>
 <body>
@@ -86,7 +99,7 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
                 <th>출판사</th>
                 <th>저자</th>
                 <th>장르</th>
-                <th>출간년도</th>
+                <th>출간일</th>
                 <th>가격</th>
                 <th>찜</th>
             </tr>
@@ -129,10 +142,18 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
         <td>
             <!-- 삭제 버튼을 생성하고 삭제 액션을 호출하는 JavaScript 함수를 호출 -->
            <% if (canDeleteReview) { %>
-    	<form id="deleteForm<%= review.getBookID() %>" action="<%=request.getContextPath() %>/myPage/deleteReviewAction.jsp" method="post">
-        <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
-        <button type="button" class="delete-button" onclick="confirmDelete('<%= review.getBookID() %>')">리뷰 삭제</button>
+    	<div style="display: flex; justify-content: space-around;">
+    		<form id="deleteForm<%= review.getBookID() %>" action="<%=request.getContextPath() %>/myPage/deleteReviewAction.jsp" method="post">
+        	<input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+        	<button type="button" class="delete-button" onclick="confirmDelete('<%= review.getBookID() %>')">리뷰 삭제</button>
     	</form>
+
+    		<form id="updateForm<%= review.getBookID() %>" action="<%=request.getContextPath() %>/myPage/updateReviewForm.jsp" method="post">
+        	<input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+        	<input type="hidden" name="reviewContent" value="<%= review.getReviewContent() %>">
+        	<button type="button" class="update-button" onclick="goToUpdateReview('<%= review.getBookID() %>')">리뷰 수정</button>
+    		</form>
+		</div>
 			<% } %>
         </td>
    			</tr>
@@ -169,6 +190,9 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
             // 확인을 눌렀을 때만 해당 폼을 서브밋합니다.
             document.getElementById("deleteForm" + bookID).submit();
         }
+    }
+    function goToUpdateReview(bookID) {
+    	document.getElementById("updateForm" + bookID).submit();
     }
     </script>
 </body>

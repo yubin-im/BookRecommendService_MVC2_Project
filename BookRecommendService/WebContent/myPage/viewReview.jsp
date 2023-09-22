@@ -32,6 +32,7 @@
             background-color: #f44336;
             color: white;
             border: none;
+            border-radius: 5px;
             padding: 6px 12px;
             text-align: center;
             text-decoration: none;
@@ -40,9 +41,10 @@
             cursor: pointer;
         }
          .update-button {
-            background-color: #f44336;
+            background-color: #007bff;
             color: white;
             border: none;
+            border-radius: 5px;
             padding: 6px 12px;
             text-align: center;
             text-decoration: none;
@@ -64,6 +66,7 @@
                     <th>평점</th>
                     <th>리뷰내용</th>
                     <th>리뷰 삭제</th> <!-- 리뷰 삭제 버튼 추가 -->
+                    <th>리뷰 수정</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,7 +74,7 @@
                 for (ReviewDTO review : reviews) {
                 %>
                     <tr>
-                        <td><%= review.getBookTitle() %></td>
+                        <td><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=review.getBookID()%>" target="right"><%=review.getBookTitle() %></a></td>
                         <td><%= review.getLikes() %></td>
                         <td><%= review.getRank() %></td>
                         <td><%= review.getReviewContent() %></td>
@@ -83,8 +86,8 @@
                         </td>
                           <td>
                             <form action="updateReviewForm.jsp" method="post">
-                            	<%request.setAttribute("updateReview", review); %>
-                                <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+                            <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+                            <input type="hidden" name="reviewContent" value="<%= review.getReviewContent() %>">
                                 <button type="submit" class="update-button">리뷰 수정</button>
                             </form>
                         </td>
