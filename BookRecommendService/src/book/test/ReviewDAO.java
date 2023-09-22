@@ -118,4 +118,31 @@ public class ReviewDAO {
 		pool.releaseConnection(conn);
 		return reviews;
 	}
+	
+	public int delete(ReviewDTO input) throws SQLException {
+		String sql = "delete from reviews where userID  = '" + input.getUserID() + "' and bookID = '" + input.getBookID() + "'";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		System.out.println("ReviewDAO delete " + sql);
+		int result = stmt.executeUpdate(sql);
+		System.out.println("ReviewDAO delete의 result " + result);
+		stmt.close();
+		pool.releaseConnection(conn);
+		return result;
+		
+	}
+	public int update(ReviewDTO input) throws SQLException {
+		String sql =  "update Reviews  set reviewContent="
+				+ "'"+input.getReviewContent()+"',"
+				+ " where userID  = '" + input.getUserID() + "' and bookID = '" + input.getBookID() + "'";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		System.out.println("ReviewDAO update " + sql);
+		int result = stmt.executeUpdate(sql);
+		System.out.println("ReviewDAO update의 result " + result);
+		stmt.close();
+		pool.releaseConnection(conn);
+		return result;
+		
+	}
 }

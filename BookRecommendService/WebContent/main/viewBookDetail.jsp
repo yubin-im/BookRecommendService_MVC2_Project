@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
-<%-- <%@ errorPage="mainError.jsp"%> --%>
+    pageEncoding="UTF-8" errorPage="mainError.jsp" %>
 <%@ page import="book.test.*, java.util.*" %>
 <jsp:useBean id="book" type="book.test.BooksDTO" scope="session"/>
 <jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
@@ -65,6 +64,18 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     .heart-button:hover {
         color: red;
     }
+    .delete-button {
+    background-color: #f44336; /* 기존 빨간색 유지 */
+    color: white;
+    border: none;
+    padding: 8px 15px; /* 변경된 스타일 */
+    border-radius: 5px; /* 변경된 스타일 */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+	}
 </style>
 </head>
 <body>
@@ -91,30 +102,44 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
             <td><button class="heart-button" onclick="addToFavorites()">❤</button></td>
         </tr>
     </table>
-    <table border="1">
-      <thead>
-         <tr>
+<table border="1">
+    <thead>
+        <tr>
             <th>이름</th>
             <th>평점</th>
             <th>리뷰내용</th>
             <th>좋아요</th>
-         </tr>
-      </thead>
-      
-      <%
-      for(Object o: reviews) {
-         ReviewDTO review = (ReviewDTO)o;
-      %>
-         <tr>
-            <td><%=review.getUserName() %></td>
-            <td><%=review.getRank() %></td>
-            <td><%=review.getReviewContent() %></td>
-            <td><%=review.getLikes() %></td>
-         </tr>
-      <%
-      }
-      %>  
-   </table>
+            <th>삭제</th> <!-- 새로운 열 추가: 삭제 버튼을 표시할 열 -->
+        </tr>
+    </thead>
+    <%
+    for(Object o: reviews) {
+        ReviewDTO review = (ReviewDTO)o;
+        String loggedInUserID = login.getUserID(); // 현재 로그인한 사용자의 ID
+        String reviewUserID = review.getUserID(); // 리뷰 작성자의 ID
+        
+        // 현재 로그인한 사용자와 리뷰 작성자가 동일한 경우에만 삭제 버튼을 표시
+        boolean canDeleteReview = loggedInUserID.equals(reviewUserID);
+    %>
+    <tr>
+        <td><%=review.getUserName() %></td>
+        <td><%=review.getRank() %></td>
+        <td><%=review.getReviewContent() %></td>
+        <td><%=review.getLikes() %></td>
+        <td>
+            <!-- 삭제 버튼을 생성하고 삭제 액션을 호출하는 JavaScript 함수를 호출 -->
+           <% if (canDeleteReview) { %>
+    	<form id="deleteForm<%= review.getBookID() %>" action="<%=request.getContextPath() %>/myPage/deleteReviewAction.jsp" method="post">
+        <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+        <button type="button" class="delete-button" onclick="confirmDelete('<%= review.getBookID() %>')">리뷰 삭제</button>
+    	</form>
+			<% } %>
+        </td>
+   			</tr>
+    		<%
+    		}
+    		%>  
+		</table>
 
     
     <!-- 리뷰쓰기 버튼 추가 -->
@@ -138,7 +163,13 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     	 // 이미 리뷰를 작성한 경우
         alert("리뷰는 하나만 작성 가능합니다.");
     }
-}
+	}
+    function confirmDelete(bookID) {
+        if (confirm("정말로 이 리뷰를 삭제하시겠습니까?")) {
+            // 확인을 눌렀을 때만 해당 폼을 서브밋합니다.
+            document.getElementById("deleteForm" + bookID).submit();
+        }
+    }
     </script>
 </body>
 </html>

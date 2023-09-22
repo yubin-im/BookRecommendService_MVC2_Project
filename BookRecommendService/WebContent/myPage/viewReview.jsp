@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="book.test.*, java.util.*"%>
+    pageEncoding="UTF-8" import="book.test.*, java.util.*" %>
 <jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
 <jsp:useBean id="reviewDAO" class="book.test.ReviewDAO" scope="application"/>
 <!DOCTYPE html>
@@ -39,6 +39,17 @@
             font-size: 14px;
             cursor: pointer;
         }
+         .update-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -65,10 +76,16 @@
                         <td><%= review.getRank() %></td>
                         <td><%= review.getReviewContent() %></td>
                         <td>
-                            <form action="deleteReviewAction.jsp" method="post">
-                            <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
-                            <input type="hidden" name = "userID"  value="<%=login.getUserID() %>">
+                            <form action="deleteReviewAction.jsp" method="post" onsubmit="return confirm('정말로 이 리뷰를 삭제하시겠습니까?');">
+                                <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
                                 <button type="submit" class="delete-button">리뷰 삭제</button>
+                            </form>
+                        </td>
+                          <td>
+                            <form action="updateReviewForm.jsp" method="post">
+                            	<%request.setAttribute("updateReview", review); %>
+                                <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+                                <button type="submit" class="update-button">리뷰 수정</button>
                             </form>
                         </td>
                     </tr>
