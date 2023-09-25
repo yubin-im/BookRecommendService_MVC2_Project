@@ -125,59 +125,56 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
             <th>평점</th>
             <th>리뷰내용</th>
             <th>좋아요</th>
-            <th>삭제</th> <!-- 새로운 열 추가: 삭제 버튼을 표시할 열 -->
+            <th>삭제</th>
         </tr>
     </thead>
-    <%
-    for(Object o: reviews) {
-        ReviewDTO review = (ReviewDTO)o;
-        String loggedInUserID = login.getUserID(); // 현재 로그인한 사용자의 ID
-        String reviewUserID = review.getUserID(); // 리뷰 작성자의 ID
-        String reviewBookID = review.getBookID();
-        likeDTO = new ReviewLikesDTO(reviewUserID, reviewBookID, login.getUserID());
-        
-        
-        // 현재 로그인한 사용자와 리뷰 작성자가 동일한 경우에만 삭제 버튼을 표시
-        boolean canDeleteReview = loggedInUserID.equals(reviewUserID);
-        boolean thumdsUp = likeDAO.check(likeDTO);
-    %>
-    <tr>
-        <td><%=review.getUserName() %></td>
-    	<td><%=review.getRank() %></td>
-    	<td><%=review.getReviewContent() %></td>
-   	 	<td> <!-- 리뷰 좋아요 -->
-        <a href="likeAction.jsp?bookID=<%= review.getBookID() %>&userID=<%= review.getUserID() %>" class="like-button">
-        <% if (thumdsUp) { %>
-            <i class="far fa-thumbs-up"></i> <!-- 좋아요 아이콘 -->
-        <% } else { %>
-            <i class="far fa-thumbs-down"></i> <!-- 싫어요 아이콘 -->
+    <% if (reviews == null || reviews.isEmpty()) { %>
+        <tr>
+            <td colspan="5">작성된 리뷰가 없습니다. 리뷰를 작성해주세요.</td>
+        </tr>
+    <% } else { %>
+        <% for (Object o : reviews) {
+            ReviewDTO review = (ReviewDTO) o;
+            String loggedInUserID = login.getUserID();
+            String reviewUserID = review.getUserID();
+            String reviewBookID = review.getBookID();
+            likeDTO = new ReviewLikesDTO(reviewUserID, reviewBookID, login.getUserID());
+            boolean canDeleteReview = loggedInUserID.equals(reviewUserID);
+            boolean thumdsUp = likeDAO.check(likeDTO);
+        %>
+            <tr>
+                <td><%= review.getUserName() %></td>
+                <td><%= review.getRank() %></td>
+                <td><%= review.getReviewContent() %></td>
+                <td>
+                    <a href="likeAction.jsp?bookID=<%= review.getBookID() %>&userID=<%= review.getUserID() %>" class="like-button">
+                    <% if (thumdsUp) { %>
+                        <i class="far fa-thumbs-up"></i>
+                    <% } else { %>
+                        <i class="far fa-thumbs-down"></i>
+                    <% } %>
+                    <%= review.getLikes() %>
+                    </a>
+                </td>
+                <td>
+                    <% if (canDeleteReview) { %>
+                        <div style="display: flex; justify-content: space-around;">
+                            <form id="deleteForm<%= review.getBookID() %>" action="<%= request.getContextPath() %>/myPage/deleteReviewAction.jsp" method="post">
+                                <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+                                <button type="button" class="delete-button" onclick="confirmDelete('<%= review.getBookID() %>')">리뷰 삭제</button>
+                            </form>
+                            <form id="updateForm<%= review.getBookID() %>" action="<%= request.getContextPath() %>/myPage/updateReviewForm.jsp" method="post">
+                                <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+                                <input type="hidden" name="reviewContent" value="<%= review.getReviewContent() %>">
+                                <button type="button" class="update-button" onclick="goToUpdateReview('<%= review.getBookID() %>')">리뷰 수정</button>
+                            </form>
+                        </div>
+                    <% } %>
+                </td>
+            </tr>
         <% } %>
-        <%=review.getLikes() %>
-        </a>
-    	</td>
-
-        <td>
-            <!-- 삭제 버튼을 생성하고 삭제 액션을 호출하는 JavaScript 함수를 호출 -->
-           <% if (canDeleteReview) { %>
-    	<div style="display: flex; justify-content: space-around;">
-    		<form id="deleteForm<%= review.getBookID() %>" action="<%=request.getContextPath() %>/myPage/deleteReviewAction.jsp" method="post">
-        	<input type="hidden" name="bookID" value="<%= review.getBookID() %>">
-        	<button type="button" class="delete-button" onclick="confirmDelete('<%= review.getBookID() %>')">리뷰 삭제</button>
-    	</form>
-
-    		<form id="updateForm<%= review.getBookID() %>" action="<%=request.getContextPath() %>/myPage/updateReviewForm.jsp" method="post">
-        	<input type="hidden" name="bookID" value="<%= review.getBookID() %>">
-        	<input type="hidden" name="reviewContent" value="<%= review.getReviewContent() %>">
-        	<button type="button" class="update-button" onclick="goToUpdateReview('<%= review.getBookID() %>')">리뷰 수정</button>
-    		</form>
-		</div>
-			<% } %>
-        </td>
-   			</tr>
-    		<%
-    		}
-    		%>  
-		</table>
+    <% } %>
+</table>
 
     
     <!-- 리뷰쓰기 버튼 추가 -->
