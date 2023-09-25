@@ -35,6 +35,22 @@
         color: #007bff;
         text-decoration: none;
     }
+     .go-to-reviews-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+     .go-back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
 </style>
 </head>
 <body>
@@ -42,7 +58,8 @@
     <h1>찜 결과</h1>
     <p><%= book.getTitle() %>이</p>
     <p><%=session.getAttribute("result") %></p>
-    <a href="<%=request.getContextPath() %>/myPage/favoriteListAction.jsp">찜 목록으로 이동</a>
+    <a href="<%=request.getContextPath() %>/myPage/favoriteListAction.jsp" class="go-to-reviews-button">찜 목록으로 이동</a>
+    <a href="<%=request.getContextPath() %>/main/bookDetail.jsp" class="go-back-button">돌아가기</a>
 </div>
 </body>
 </html>

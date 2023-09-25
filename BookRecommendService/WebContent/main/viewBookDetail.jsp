@@ -11,10 +11,13 @@
 <jsp:setProperty name="favoriteDTO" property="userID" value="<%=login.getUserID() %>"/>
 <jsp:setProperty name="reviewDTO" property="bookID" value="<%=book.getBookID() %>"/>
 <jsp:setProperty name="reviewDTO" property="userID" value="<%=login.getUserID() %>"/>
-
+<jsp:useBean id="likeDAO" class="book.test.ReviewLikesDAO" scope="application"/>
+<jsp:useBean id="likeDTO" class="book.test.ReviewLikesDTO" scope="page"/>
 <!DOCTYPE html>
 <html>
 <head>
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <meta charset="UTF-8">
 <%
 ArrayList<ReviewDTO> reviews = reviewDAO.selectAllBook(book.getBookID());
@@ -130,15 +133,29 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
         ReviewDTO review = (ReviewDTO)o;
         String loggedInUserID = login.getUserID(); // 현재 로그인한 사용자의 ID
         String reviewUserID = review.getUserID(); // 리뷰 작성자의 ID
+        String reviewBookID = review.getBookID();
+        likeDTO = new ReviewLikesDTO(reviewUserID, reviewBookID, login.getUserID());
+        
         
         // 현재 로그인한 사용자와 리뷰 작성자가 동일한 경우에만 삭제 버튼을 표시
         boolean canDeleteReview = loggedInUserID.equals(reviewUserID);
+        boolean thumdsUp = likeDAO.check(likeDTO);
     %>
     <tr>
         <td><%=review.getUserName() %></td>
-        <td><%=review.getRank() %></td>
-        <td><%=review.getReviewContent() %></td>
-        <td><%=review.getLikes() %></td>
+    	<td><%=review.getRank() %></td>
+    	<td><%=review.getReviewContent() %></td>
+   	 	<td> <!-- 리뷰 좋아요 -->
+        <a href="likeAction.jsp?bookID=<%= review.getBookID() %>&userID=<%= review.getUserID() %>" class="like-button">
+        <% if (thumdsUp) { %>
+            <i class="far fa-thumbs-up"></i> <!-- 좋아요 아이콘 -->
+        <% } else { %>
+            <i class="far fa-thumbs-down"></i> <!-- 싫어요 아이콘 -->
+        <% } %>
+        <%=review.getLikes() %>
+        </a>
+    	</td>
+
         <td>
             <!-- 삭제 버튼을 생성하고 삭제 액션을 호출하는 JavaScript 함수를 호출 -->
            <% if (canDeleteReview) { %>

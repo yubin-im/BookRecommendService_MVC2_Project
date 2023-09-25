@@ -45,5 +45,6 @@ reviewDAO.update(reviewDTO);
 <body>
     <h1>리뷰 수정이 완료되었습니다.</h1>
     <a href="viewReview.jsp" class="link-button">리뷰 목록으로 이동</a>
+   <a href="<%= request.getContextPath() %>/main/bookDetail.jsp?bookID=<%= reviewDTO.getBookID() %>" class="link-button">돌아가기</a>
 </body>
 </html>

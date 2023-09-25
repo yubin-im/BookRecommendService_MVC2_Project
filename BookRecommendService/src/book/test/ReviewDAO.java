@@ -129,7 +129,6 @@ public class ReviewDAO {
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;
-		
 	}
 	public int update(ReviewDTO input) throws SQLException {
 		String sql =  "update Reviews  set reviewContent="
@@ -147,6 +146,22 @@ public class ReviewDAO {
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;
-		
+	}
+	public void insertLike(String book, String user) throws SQLException {
+		String sql = "update reviews set likes = likes + 1 where bookid = '" + book + "' and userid = '" + user + "'"; 
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate(sql);
+		stmt.close();
+		pool.releaseConnection(conn);
+	}
+	public void deleteLike(String book, String user) throws SQLException {
+		String sql = "update reviews set likes = likes - 1 where bookid = '" + book + "' and userid = '" + user + "'"; 
+		System.out.println("reviews의 deletelike sql : " + sql);
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		System.out.println(stmt.executeUpdate(sql));
+		stmt.close();
+		pool.releaseConnection(conn);
 	}
 }
