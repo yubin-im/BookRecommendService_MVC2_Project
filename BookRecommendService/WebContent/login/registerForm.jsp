@@ -65,7 +65,15 @@
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary">전송</button>
-            <button type="reset" class="btn btn-secondary">취소</button>
+            <button type="button" class="btn btn-secondary" id="cancelButton">취소</button>
+				<script>
+					// 취소 버튼 클릭 시 이벤트 핸들러
+					document.getElementById("cancelButton").addEventListener(
+							"click", function() {
+								// loginForm.html로 이동
+								window.location.href = "loginForm.html";
+							});
+				</script>
         </div>
     </form>
 </div>

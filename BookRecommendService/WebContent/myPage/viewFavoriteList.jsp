@@ -10,30 +10,20 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f3f3f3;
-        margin: 0;
-        padding: 0;
-    }
 
-    h1 {
-        text-align: center;
-        padding: 20px;
-        background-color: #337ab7;
-        color: white;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
         margin: 20px auto;
-        background-color: #ffffff;
-        box-shadow: 0px 0px 10px #888888;
+
     }
 
     th, td {
         border: 1px solid #dddddd;
         text-align: left;
-        padding: 10px;
+        padding: 8px;
     }
 
     th {

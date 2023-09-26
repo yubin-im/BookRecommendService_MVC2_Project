@@ -46,10 +46,15 @@
     .paging-table td {
         text-align: center;
     }
+    
+    .blue-text {
+    color: green;
+    text-align: center;
+	}
 </style>
 </head>
 <body>
-   <h4>평균 별점이 높은 작품</h4>
+   <h4 class="blue-text">"평균 별점이 가장 높은 도서: <%=request.getAttribute("title") %>"</h4>
    
    <!-- 통합 검색 -->
    <div style="text-align: right;">

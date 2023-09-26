@@ -11,10 +11,20 @@
 <meta charset="UTF-8">
 <title>viewBookDetailAction</title>
 <%
-int result = 0;
+//도서 상세 내용 가져오기
 BooksDTO book = booksdao.select(booksdto);
 System.out.println("도서 상세: " + book);
 session.setAttribute("book", book);
+
+//해당 책의 평균 별점 계산
+double avgRank = booksdao.avgRank(booksdto.getBookID());
+System.out.println(book.getTitle() + "의 평균 별점: " + avgRank);
+request.setAttribute("avgRank", avgRank);
+
+//해당 책을 찜한 사람 수 계산
+int favoriteCount = booksdao.favoriteCount(booksdto.getBookID());
+System.out.println(book.getTitle() + "을 찜한 사람의 수: " + favoriteCount);
+request.setAttribute("favoriteCount", favoriteCount);
 %>
 <jsp:forward page="viewBookDetail.jsp"/>
 </head>

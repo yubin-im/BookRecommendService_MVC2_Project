@@ -327,4 +327,80 @@ public class BooksDAO {
 		return books;
 	}
 	
+	/**
+	 * 해당 책의 평균 별점 계산 메서드
+	 * @param bookid
+	 * @return
+	 * @throws SQLException
+	 */
+	public double avgRank(String bookid) throws SQLException {
+		double avgRank = 0;
+		String sql = "select avg(rank) from reviews where bookid = '" + bookid + "'";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			avgRank = result.getDouble(1);
+		}
+
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return avgRank;
+	}
+	
+	/**
+	 * 해당 책의 찜한 사람들의 수 계산 메서드
+	 * @param bookid
+	 * @return
+	 * @throws SQLException
+	 */
+	public int favoriteCount(String bookid) throws SQLException {
+		int favoriteCount = 0;
+		String sql = "select count(*) from favorites where bookid = '" + bookid + "'";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			favoriteCount = result.getInt(1);
+		}
+
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return favoriteCount;
+	}
+	
+	/**
+	 * 평균 별점이 가장 높은 도서의 제목 가져오기
+	 * @return
+	 * @throws SQLException
+	 */
+	public String bestRankBook() throws SQLException {
+		String bookid = "";
+		String title = "";
+		String sql = "SELECT bookid FROM (SELECT bookid, AVG(rank) AS average_rank FROM reviews GROUP BY bookid ORDER BY average_rank DESC) WHERE ROWNUM = 1";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bookid = result.getString(1);
+		}
+		
+		sql = "select title from books where bookid = '" + bookid + "'";
+		result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			title = result.getString(1);
+		}
+		
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return title;
+	}
+	
 }

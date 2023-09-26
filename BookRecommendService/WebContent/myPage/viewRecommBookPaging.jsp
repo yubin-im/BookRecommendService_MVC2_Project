@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean id="recommBooks" type="java.util.ArrayList" scope="request"/>
+<jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
 <!-- 추천 도서 리스트 출력 -->
 <!DOCTYPE html>
 <html>
@@ -51,6 +52,7 @@
 </head>
 <body>
     <h1>추천 도서 목록</h1>
+    <h4 style="color: green;">내가 선호하는 장르: <%=login.getGenre1() %>, <%=login.getGenre2() %></h4>
     
     <!-- 추천 도서 목록 테이블 -->
     <table class="main-table" border="1">

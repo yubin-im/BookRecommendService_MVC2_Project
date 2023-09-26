@@ -108,7 +108,9 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
 </style>
 </head>
 <body>
-    <table>
+<h4 style="color: green; text-align: center;">평균 별점: <%=request.getAttribute("avgRank") %> 즐겨찾는 사람의 수: <%=request.getAttribute("favoriteCount") %></h4>
+
+    <table border="1" style="width: 90%; margin: 0 auto;">
         <thead>
             <tr>
                 <th>도서 제목</th>
@@ -132,14 +134,17 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
         </tr>
     </table>
         <!-- 리뷰쓰기 버튼 추가 -->
-	<button id="writeReviewButton" onclick="writeReview()" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-   	 리뷰쓰기
-	</button>
+<div style="text-align: center;">
+    <button id="writeReviewButton" onclick="writeReview()" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        리뷰쓰기
+    </button>
     <!-- 책 사기 버튼 추가 -->
-	<button id="buyBookButton" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-    	책 사기
-	</button>
-<table border="1">
+    <button id="buyBookButton" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        책 사기
+    </button>
+</div>
+	
+<table border="1" style="width: 90%; margin: 0 auto;">
     <thead>
         <tr>
             <th>이름</th>

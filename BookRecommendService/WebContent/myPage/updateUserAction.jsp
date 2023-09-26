@@ -39,7 +39,7 @@ userDAO.update(userDTO);
 <div class="logout-button">
     <script>
         alert('로그아웃 되었습니다.');
-        window.location.href = "<%= request.getContextPath() %>/login/loginForm.html"; // 로그인 페이지로 이동
+        window.top.location.href = "<%= request.getContextPath() %>/login/loginForm.html"; // 로그인 페이지로 이동
     </script>
     <%
     session.invalidate(); // 세션 파기 (로그아웃)

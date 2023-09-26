@@ -12,6 +12,11 @@
 ArrayList<BooksDTO> books = booksdao.selectAllPaging(request);
 System.out.println("도서 개수: " + books.size());
 request.setAttribute("books", books);  // 리스트 데이터 가져오기
+
+// 평균 별점이 가장 높은 도서 제목 가져오기
+String title = booksdao.bestRankBook();
+System.out.println("평균 별점이 가장 높은 도서: " + title);
+request.setAttribute("title", title);
 %>
 </head>
 <body>
