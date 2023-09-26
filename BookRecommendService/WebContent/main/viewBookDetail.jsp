@@ -104,6 +104,7 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
 		.star-empty {
     		color: gray; /* 빈 별 아이콘의 색상 */
 		}
+		}
 </style>
 </head>
 <body>
@@ -130,6 +131,14 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
             <td><button class="heart-button" onclick="addToFavorites()">❤</button></td>
         </tr>
     </table>
+        <!-- 리뷰쓰기 버튼 추가 -->
+	<button id="writeReviewButton" onclick="writeReview()" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+   	 리뷰쓰기
+	</button>
+    <!-- 책 사기 버튼 추가 -->
+	<button id="buyBookButton" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+    	책 사기
+	</button>
 <table border="1">
     <thead>
         <tr>
@@ -140,6 +149,7 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
             <th>삭제</th>
         </tr>
     </thead>
+    
     <% if (reviews == null || reviews.isEmpty()) { %>
         <tr>
             <td colspan="5">작성된 리뷰가 없습니다. 리뷰를 작성해주세요.</td>
@@ -161,7 +171,7 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     			<div class="star-rating">
         			<% int rank = review.getRank(); %>
         			<% for (int i = 1; i <= 5; i++) { %>
-            			<% if (i <= rank) { %>
+            				<% if (i <= rank) { %>
                 			<i class="fas fa-star star-filled"></i> <!-- 별 아이콘 (채워진 별) -->
             			<% } else { %>
                 			<i class="far fa-star star-empty"></i> <!-- 빈 별 아이콘 -->
@@ -201,11 +211,7 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
 </table>
 
     
-    <!-- 리뷰쓰기 버튼 추가 -->
-	<!-- 리뷰쓰기 버튼 추가 -->
-	<button id="writeReviewButton" onclick="writeReview()" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-   	 리뷰쓰기
-	</button>
+
     <script>
     function addToFavorites() {
       	 window.location.href = "<%=request.getContextPath() %>/myPage/favoriteAction.jsp";
@@ -232,6 +238,16 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     function goToUpdateReview(bookID) {
     	document.getElementById("updateForm" + bookID).submit();
     }
+    // 책 사기 버튼 클릭 시 Kyobo Bookstore 검색 페이지로 이동하는 함수
+    document.getElementById("buyBookButton").addEventListener("click", function() {
+        // 책 제목을 가져와서 URL에 추가합니다.
+        var bookTitle = "<%=book.getTitle()%>";
+        var kyoboSearchURL = "https://search.kyobobook.co.kr/search?keyword=" + encodeURIComponent(bookTitle);
+        
+        // 새 창에서 Kyobo Bookstore 검색 결과 페이지 열기
+        window.open(kyoboSearchURL, "_blank");
+    });
+    
     </script>
 </body>
 </html>

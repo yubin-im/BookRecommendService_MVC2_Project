@@ -45,7 +45,7 @@
 
         <a href="<%= request.getContextPath() %>/myPage/favoriteListAction.jsp" class="btn btn-primary">내 찜 목록</a>
         <a href="<%= request.getContextPath() %>/myPage/viewReview.jsp" class="btn btn-primary">내가 작성한 리뷰 보기</a>
-        <a href="<%= request.getContextPath() %>/myPage/updateRegister.jsp" class="btn btn-primary">회원정보 변경</a>    
+        <a href="<%= request.getContextPath() %>/myPage/updateUser.jsp" class="btn btn-primary">회원정보 변경</a>    
     </div>
 
     <!-- Bootstrap JavaScript 및 jQuery 추가 (선택 사항) -->

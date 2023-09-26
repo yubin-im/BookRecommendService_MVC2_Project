@@ -275,7 +275,7 @@ public class ReviewDAO {
 	 */
 	public ArrayList<ReviewDTO> reviewWordcloud() throws SQLException {
 		// 데이터가 너무 많으면 안되서 10행만 가져옴
-		String sql = "select * from (select * from reviews where rownum <= 10)";
+		String sql = "select * from (select * from reviews where rownum <= 10 order by to_number(bookid))";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);

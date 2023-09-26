@@ -10,7 +10,7 @@
 <body>
 <div class="container mt-5">
     <h3 class="text-center">회원 정보 업데이트</h3>
-    <form name="updateForm" action="updateAction.jsp" onsubmit="return checkInput(updateForm);">
+    <form name="updateForm" action="updateUserForm.jsp">
         <!-- 여기에 회원 정보 업데이트에 필요한 입력 필드 추가 -->
         <!-- 예: 이름, 책 장르 등 -->
 

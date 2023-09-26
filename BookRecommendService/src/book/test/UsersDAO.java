@@ -123,5 +123,28 @@ public class UsersDAO {
 		pool.releaseConnection(conn);
 		return result;
 	}
+	
+	/**
+	 * 회원 정보 업데이트
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
+	public int update(UsersDTO input) throws SQLException {
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		 String sql = "UPDATE users SET " +
+                 "name = '" + input.getName() + "', " +
+                 "password = '" + input.getPassword() + "', " +
+                 "genre1 = '" + input.getGenre1() + "', " +
+                 "genre2 = '" + input.getGenre2() + "' " +
+                 "WHERE userid = '" + input.getUserID() + "'";
+		 System.out.println(sql);
+		 int result = stmt.executeUpdate(sql);
+		 
+		 stmt.close();
+		 pool.releaseConnection(conn);
+		 return result;
+	}
 
 }

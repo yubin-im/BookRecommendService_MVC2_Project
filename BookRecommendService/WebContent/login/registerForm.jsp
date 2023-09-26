@@ -12,20 +12,21 @@
     <h3 class="text-center">회원 정보 등록</h3>
     <form name="form1" action="registerAction.jsp" onsubmit="return checkInput(form1);">
         <div class="form-group">
-            <label for="userID">* 아이디</label>
+            <label for="userID">아이디</label>
             <input type="text" class="form-control" name="userID" required>
         </div>
         <div class="form-group">
-            <label for="password">* 비밀번호</label>
+            <label for="password">비밀번호</label>
             <input type="password" class="form-control" name="password" required>
         </div>
         <div class="form-group">
-            <label for="name">* 이름</label>
-            <input type="text" class="form-control" name="name" pattern="[가-힣]*" title="한글만 입력 가능합니다." required>
-        </div>
+    		<label for="name">이름</label>
+    		<input type="text" class="form-control" name="name" pattern="[가-힣]{1,6}" title="한글로 1자 이상 6자 이하로 입력하세요." required>
+    		<small class="text-danger" id="nameError" style="display: none;">이름은 1자에서 6자 사이어야 합니다.</small>
+		</div>
         <div class="form-group">
-            <label>* 선호하는 책 장르 선택</label><br>
-            <label>* 문학</label>
+            <label>선호하는 책 장르 선택</label><br>
+            <label>문학</label>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="genre1" value="판타지" required>
                 <label class="form-check-label">판타지</label>
@@ -44,7 +45,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label>* 비문학</label>
+            <label>비문학</label>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="genre2" value="과학" required>
                 <label class="form-check-label">과학</label>
@@ -73,5 +74,18 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.forms['form1'].addEventListener('submit', function (event) {
+        var nameInput = this.querySelector('input[name="name"]');
+        var nameError = document.getElementById('nameError');
+
+        if (nameInput.value.length > 6) {
+            nameError.style.display = 'block';
+            event.preventDefault(); // 폼 제출을 중단합니다.
+        } else {
+            nameError.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>
