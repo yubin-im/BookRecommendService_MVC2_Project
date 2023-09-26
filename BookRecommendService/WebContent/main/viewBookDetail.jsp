@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" errorPage="mainError.jsp" %>
+    pageEncoding="UTF-8"  %>
+<!--     errorPage="mainError.jsp" -->
 <%@ page import="book.test.*, java.util.*" %>
 <jsp:useBean id="book" type="book.test.BooksDTO" scope="session"/>
 <jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
@@ -92,6 +93,17 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
         display: inline-block;
         font-size: 14px;
     }
+      .star-rating {
+    	font-size: 18px; /* 별 아이콘 크기 조절 */
+    	display: inline-block; /* 가로 정렬을 위해 인라인 블록으로 설정 */
+    	
+		.star-filled {
+    		color: gold; /* 채워진 별 아이콘의 색상 */
+		}
+
+		.star-empty {
+    		color: gray; /* 빈 별 아이콘의 색상 */
+		}
 </style>
 </head>
 <body>
@@ -141,11 +153,23 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
             likeDTO = new ReviewLikesDTO(reviewUserID, reviewBookID, login.getUserID());
             boolean canDeleteReview = loggedInUserID.equals(reviewUserID);
             boolean thumdsUp = likeDAO.check(likeDTO);
+			String userName = reviewDAO.userName(review.getUserID());
         %>
             <tr>
-                <td><%= review.getUserName() %></td>
-                <td><%= review.getRank() %></td>
-                <td><%= review.getReviewContent() %></td>
+                <td><%=userName %></td>
+                <td>
+    			<div class="star-rating">
+        			<% int rank = review.getRank(); %>
+        			<% for (int i = 1; i <= 5; i++) { %>
+            			<% if (i <= rank) { %>
+                			<i class="fas fa-star star-filled"></i> <!-- 별 아이콘 (채워진 별) -->
+            			<% } else { %>
+                			<i class="far fa-star star-empty"></i> <!-- 빈 별 아이콘 -->
+            			<% } %>
+        			<% } %>
+    			</div>
+				</td>
+                <td style="max-width:600px; word-wrap: break-word;"><%= review.getReviewContent() %></td>
                 <td>
                     <a href="likeAction.jsp?bookID=<%= review.getBookID() %>&userID=<%= review.getUserID() %>" class="like-button">
                     <% if (thumdsUp) { %>

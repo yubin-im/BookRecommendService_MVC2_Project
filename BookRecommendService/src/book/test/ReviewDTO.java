@@ -60,16 +60,6 @@ public class ReviewDTO {
 		return "ReviewDTO [reviewContent=" + reviewContent + ", reviewDate=" + reviewDate + ", rank=" + rank
 				+ ", userID=" + userID + ", bookID=" + bookID + ", likes=" + likes + "]";
 	}
-	public String getBookTitle() throws SQLException {
-		BooksDAO dao = new BooksDAO();
-		String title = dao.selectSecond(this.bookID);
-		return title;
-	}
-	public String getUserName() throws SQLException {
-		UsersDAO dao = new UsersDAO();
-		String name = dao.selectSecond(this.userID);
-		return name;
-	}
 	
 	public String getReviewContent() {
 		return reviewContent;

@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="UTF-8">
     <title>viewReviews.jsp</title>
     <style>
@@ -52,6 +54,18 @@
             font-size: 14px;
             cursor: pointer;
         }
+        .star-rating {
+    	font-size: 18px; /* 별 아이콘 크기 조절 */
+    	display: inline-block; /* 가로 정렬을 위해 인라인 블록으로 설정 */
+    	
+		.star-filled {
+    		color: gold; /* 채워진 별 아이콘의 색상 */
+		}
+
+		.star-empty {
+    		color: gray; /* 빈 별 아이콘의 색상 */
+		}
+}
     </style>
 </head>
 <body>
@@ -72,12 +86,24 @@
             <tbody>
                 <%
                 for (ReviewDTO review : reviews) {
+                	String bookTitle = reviewDAO.bookTitle(review.getBookID());
                 %>
                     <tr>
-                        <td><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=review.getBookID()%>" target="right"><%=review.getBookTitle() %></a></td>
+                        <td style="max-width:600px; word-wrap: break-word;"><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=review.getBookID()%>" target="right"><%=bookTitle %></a></td>
                         <td><%= review.getLikes() %></td>
-                        <td><%= review.getRank() %></td>
-                        <td><%= review.getReviewContent() %></td>
+                        <td>
+                        <div class="star-rating">
+        					<% int rank = review.getRank(); %>
+        					<% for (int i = 1; i <= 5; i++) { %>
+            					<% if (i <= rank) { %>
+                			<i class="fas fa-star star-filled"></i> <!-- 별 아이콘 (채워진 별) -->
+            					<% } else { %>
+                			<i class="far fa-star star-empty"></i> <!-- 빈 별 아이콘 -->
+            					<% } %>
+        					<% } %>
+    					</div>
+                        </td>
+                        <td style="max-width:600px; word-wrap: break-word;"><%= review.getReviewContent() %></td>
                         <td>
                             <form action="deleteReviewAction.jsp" method="post" onsubmit="return confirm('정말로 이 리뷰를 삭제하시겠습니까?');">
                                 <input type="hidden" name="bookID" value="<%= review.getBookID() %>">

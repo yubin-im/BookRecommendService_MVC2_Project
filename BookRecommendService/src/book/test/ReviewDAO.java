@@ -164,4 +164,42 @@ public class ReviewDAO {
 		stmt.close();
 		pool.releaseConnection(conn);
 	}
+	public String userName(String input) throws SQLException {
+		 String sql = "SELECT users.name " +
+                 "FROM reviews " +
+                 "INNER JOIN users ON reviews.userid = users.userid " +
+                 "WHERE reviews.userid = '" + input +"'";		
+		System.out.println("reviews의 username 쿼리: " + sql);
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		String userName = null;
+		while (result.next()) {
+		    userName = result.getString("name");
+		}
+		System.out.println(userName);
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return userName;
+	}
+	public String bookTitle(String input) throws SQLException {
+		 String sql = "SELECT books.title " +
+                "FROM reviews " +
+                "INNER JOIN books ON reviews.bookid = books.bookid " +
+                "WHERE reviews.bookid = '" + input +"'";		
+		System.out.println("reviews의 booktitle 쿼리 : " + sql);
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		String title = null;
+		while (result.next()) {
+			title = result.getString("title");
+		}
+		System.out.println(title);
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return title;
+	}
 }

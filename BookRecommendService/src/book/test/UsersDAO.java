@@ -45,23 +45,6 @@ public class UsersDAO {
 		pool.releaseConnection(conn);
 		return users;
 	}
-	public String selectSecond(String input) throws SQLException {
-		Connection conn = pool.getConnection();
-		Statement stmt = conn.createStatement();
-		String sql = "select * from Users where userid = '" + input + "'";
-		ResultSet result = stmt.executeQuery(sql);
-		UsersDTO users = null;
-		while (result.next()) {
-			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
-					result.getString("genre1"), result.getString("genre2"));
-		}
-		String userName = users.getName();
-		System.out.println(users);
-		result.close();
-		stmt.close();
-		pool.releaseConnection(conn);
-		return userName;
-	}
 	public boolean getSelect(String usersID) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
@@ -95,6 +78,15 @@ public class UsersDAO {
 				+ "'"+input.getGenre1()+"',"
 				+ "'"+input.getGenre2()+"')";
 		System.out.println(sql);
+		int result = stmt.executeUpdate(sql);
+		stmt.close();
+		pool.releaseConnection(conn);
+		return result;
+	}
+	public int delete(String input) throws SQLException {
+		String sql = "delete from users where userID  = '" + input +  "'";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
 		int result = stmt.executeUpdate(sql);
 		stmt.close();
 		pool.releaseConnection(conn);

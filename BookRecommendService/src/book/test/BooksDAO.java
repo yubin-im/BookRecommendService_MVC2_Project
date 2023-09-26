@@ -78,26 +78,6 @@ public class BooksDAO {
 		pool.releaseConnection(conn);
 		return book;
 	}
-	public String selectSecond(String input) throws SQLException {
-		String sql = "select * from books where bookid = '" + input + "'";
-		Connection conn = pool.getConnection(); 
-		Statement stmt = conn.createStatement();
-		ResultSet result = stmt.executeQuery(sql);
-		
-		BooksDTO book = null;
-		
-		while(result.next()) {
-			book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
-					result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
-					result.getInt("PRICE"), result.getInt("VIEWS"));
-		}
-		System.out.println(book);
-		String title = book.getTitle();
-		result.close();
-		stmt.close();
-		pool.releaseConnection(conn);
-		return title;
-	}
 
 	// 사용자가 선택한 장르에 맞는 추천도서 데이터베이스에서 arraylist로 만드는 함수
 	public ArrayList<BooksDTO> selectRecommBook(String genre1, String genre2) throws SQLException{ 
