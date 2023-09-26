@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-
 public class UsersDAO {
 	private static String url = "jdbc:oracle:thin:@localhost:1521:xe"; // database마다 url은 모두 다르다. 각 DB회사의 홈페이지에서 찾아야 함.
 	private static String user = "hr";
@@ -28,38 +27,55 @@ public class UsersDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 로그인 메서드
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public UsersDTO select(UsersDTO input) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		String sql = "select * from Users where userid = '" + input.getUserID() + "'and password = '" + input.getPassword() + "'";
 		ResultSet result = stmt.executeQuery(sql);
+		
 		UsersDTO users = null;
+		
 		while (result.next()) {
 			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
 					result.getString("genre1"), result.getString("genre2"));
 		}
 		
-		System.out.println(users);
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
 		return users;
 	}
+	
+	/**
+	 * 아이디 체크 메서드
+	 * @param usersID
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean getSelect(String usersID) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		String sql = "select * from Users where userid = '" + usersID + "'";
 		ResultSet result = stmt.executeQuery(sql);
+		
 		UsersDTO users = null;
+		
 		while (result.next()) {
 			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
 					result.getString("genre1"), result.getString("genre2"));
 		}
 		
-		System.out.println(users);
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
+		
 		if(users == null) {
 			return true;
 		}
@@ -67,6 +83,13 @@ public class UsersDAO {
 			return false;
 		}
 	}
+	
+	/**
+	 * 회원가입 메서드
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public int insert(UsersDTO input) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
@@ -77,17 +100,25 @@ public class UsersDAO {
 				+ "'"+input.getName()+"',"
 				+ "'"+input.getGenre1()+"',"
 				+ "'"+input.getGenre2()+"')";
-		System.out.println(sql);
 		int result = stmt.executeUpdate(sql);
+		
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;
 	}
+	
+	/**
+	 * 회원 탈퇴 메서드
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public int delete(String input) throws SQLException {
 		String sql = "delete from users where userID  = '" + input +  "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		int result = stmt.executeUpdate(sql);
+		
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;

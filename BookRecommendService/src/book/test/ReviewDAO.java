@@ -12,7 +12,6 @@ public class ReviewDAO {
 	private static String password = "hr";
 	private static final String jdbcclass = "oracle.jdbc.OracleDriver";
 	private ConnectionPool pool;
-	private BooksDTO books;
 	
 	public ReviewDAO() {
 		super();
@@ -33,13 +32,17 @@ public class ReviewDAO {
 		}
 	}
 	
+	/**
+	 * 리뷰 작성 여부 확인 메서드 
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean check(ReviewDTO input) throws SQLException {
 		String sql = "select * from reviews where userid = '" + input.getUserID() + "'and bookID = '" + input.getBookID() + "'";
 		Connection conn = pool.getConnection(); 
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
-
-		System.out.println("review의 check의 쿼리문 : " + sql);
 		
 		ReviewDTO review = null;
 		
@@ -47,24 +50,30 @@ public class ReviewDAO {
 			review = new ReviewDTO(result.getString("reviewContent"), result.getDate("reviewDate"), result.getInt("rank"),
 					result.getString("userID"), result.getString("bookID"), result.getInt("likes"));
 		}
+		
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
+		
 		if(review == null) {
-			System.out.println("review의 check : " + true);
 			return true;
 			
 		}
 		else {
-			System.out.println("review의 check : " + false);
 			return false;
 		}
-		
 	}
 	
+	/**
+	 * 리뷰 추가
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public int insert(ReviewDTO input) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
+		
 		String sql = "insert into reviews(userID, bookID, rank, reviewContent, reviewDate)\r\n" + 
 				"	values( "
 				+ "'"+input.getUserID()+"',"
@@ -72,64 +81,90 @@ public class ReviewDAO {
 				+ "'"+input.getRank()+"',"
 				+ "'"+input.getReviewContent()+"',"
 				+ "SYSDATE"+")";
-		System.out.println("review insert : " + sql);
+		
 		int result = stmt.executeUpdate(sql);
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;
 	}
 	
+	/**
+	 * 사용자의 리뷰 전체 출력
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<ReviewDTO> selectAll(String input) throws SQLException {
 		String sql = "select * from reviews where userid = '" + input + "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		System.out.println("review selectAll " + sql);
 		ResultSet result = stmt.executeQuery(sql);
+		
 		ArrayList<ReviewDTO> reviews = new ArrayList();
 		ReviewDTO review = null;
+		
 		while(result.next()) {
 			review = new ReviewDTO(result.getString("reviewContent"), result.getDate("reviewDate"), result.getInt("rank"),
 					result.getString("userID"), result.getString("bookID"), result.getInt("likes"));
 			reviews.add(review);
-			System.out.println("review selectAll " + review);
 		}
+		
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
 		return reviews;
 	}
 	
+	/**
+	 * 책 상세의 리뷰 전체 출력
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<ReviewDTO> selectAllBook(String input) throws SQLException {
 		String sql = "select * from reviews where bookid = '" + input + "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		System.out.println("review selectAll " + sql);
+		
 		ResultSet result = stmt.executeQuery(sql);
 		ArrayList<ReviewDTO> reviews = new ArrayList();
 		ReviewDTO review = null;
+		
 		while(result.next()) {
 			review = new ReviewDTO(result.getString("reviewContent"), result.getDate("reviewDate"), result.getInt("rank"),
 					result.getString("userID"), result.getString("bookID"), result.getInt("likes"));
 			reviews.add(review);
-			System.out.println("review selectAll " + review);
 		}
+		
 		result.close();
 		stmt.close();
-		pool.releaseConnection(conn);
+		pool.releaseConnection(conn);	
 		return reviews;
 	}
 	
+	/**
+	 * 리뷰 삭제 메서드
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public int delete(ReviewDTO input) throws SQLException {
 		String sql = "delete from reviews where userID  = '" + input.getUserID() + "' and bookID = '" + input.getBookID() + "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		System.out.println("ReviewDAO delete " + sql);
+
 		int result = stmt.executeUpdate(sql);
-		System.out.println("ReviewDAO delete의 result " + result);
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;
 	}
+	
+	/**
+	 * 리뷰 수정 메서드
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public int update(ReviewDTO input) throws SQLException {
 		String sql =  "update Reviews  set reviewContent="
 				+ "'"+input.getReviewContent()+"',"
@@ -140,66 +175,122 @@ public class ReviewDAO {
 				+ " where userID  = '" + input.getUserID() + "' and bookID = '" + input.getBookID() + "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		System.out.println("ReviewDAO update " + sql);
 		int result = stmt.executeUpdate(sql);
-		System.out.println("ReviewDAO update의 result " + result);
+
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;
 	}
+	
+	/**
+	 * 좋아요 추가 메서드
+	 * @param book
+	 * @param user
+	 * @throws SQLException
+	 */
 	public void insertLike(String book, String user) throws SQLException {
 		String sql = "update reviews set likes = likes + 1 where bookid = '" + book + "' and userid = '" + user + "'"; 
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate(sql);
+		
 		stmt.close();
 		pool.releaseConnection(conn);
 	}
+	
+	/**
+	 * 좋아요 취소 메서드
+	 * @param book
+	 * @param user
+	 * @throws SQLException
+	 */
 	public void deleteLike(String book, String user) throws SQLException {
 		String sql = "update reviews set likes = likes - 1 where bookid = '" + book + "' and userid = '" + user + "'"; 
-		System.out.println("reviews의 deletelike sql : " + sql);
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		System.out.println(stmt.executeUpdate(sql));
+		
 		stmt.close();
 		pool.releaseConnection(conn);
 	}
+	
+	/**
+	 * 리뷰 데이터 가져올 때 유저 네임 가져오는 메서드
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public String userName(String input) throws SQLException {
 		 String sql = "SELECT users.name " +
                  "FROM reviews " +
                  "INNER JOIN users ON reviews.userid = users.userid " +
                  "WHERE reviews.userid = '" + input +"'";		
-		System.out.println("reviews의 username 쿼리: " + sql);
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
+		
 		String userName = null;
+		
 		while (result.next()) {
 		    userName = result.getString("name");
 		}
-		System.out.println(userName);
+		
 		result.close();
 		stmt.close();
-		pool.releaseConnection(conn);
+		pool.releaseConnection(conn);	
 		return userName;
 	}
+	
+	/**
+	 * 리뷰 데이터 가져올 때 책 제목 가져오는 메서드
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
 	public String bookTitle(String input) throws SQLException {
 		 String sql = "SELECT books.title " +
                 "FROM reviews " +
                 "INNER JOIN books ON reviews.bookid = books.bookid " +
                 "WHERE reviews.bookid = '" + input +"'";		
-		System.out.println("reviews의 booktitle 쿼리 : " + sql);
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
+		
 		String title = null;
+		
 		while (result.next()) {
 			title = result.getString("title");
 		}
-		System.out.println(title);
+		
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
 		return title;
+	}
+	
+	/**
+	 * 리뷰 워드클라우드 생성 데이터 가져오는 메서드
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<ReviewDTO> reviewWordcloud() throws SQLException {
+		// 데이터가 너무 많으면 안되서 10행만 가져옴
+		String sql = "select * from (select * from reviews where rownum <= 10)";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+
+		ReviewDTO review = null;
+		ArrayList<ReviewDTO> reviews = new ArrayList<ReviewDTO>();
+
+		while (result.next()) {
+			review = new ReviewDTO(result.getString("reviewcontent"));
+			reviews.add(review);
+		}
+
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return reviews;
 	}
 }

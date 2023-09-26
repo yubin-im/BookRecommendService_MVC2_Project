@@ -15,7 +15,6 @@ public class BooksDAO {
 	private static String password = "hr";
 	private static final String jdbcclass = "oracle.jdbc.OracleDriver";
 	private ConnectionPool pool;
-	private BooksDTO books;
 
 	public BooksDAO() {
 		super();
@@ -36,6 +35,11 @@ public class BooksDAO {
 		}
 	}
 	
+	/**
+	 * 전체 도서 목록 출력 메서드
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<BooksDTO> selectAll() throws SQLException {
 		String sql = "select * from books";
 		Connection conn = pool.getConnection(); 
@@ -58,6 +62,12 @@ public class BooksDAO {
 		return books;
 	}
 	
+	/**
+	 * 도서 상세 출력 메서드
+	 * @param books
+	 * @return
+	 * @throws SQLException
+	 */
 	public BooksDTO select(BooksDTO books) throws SQLException {
 		String sql = "select * from books where bookid = '" + books.getBookID() + "'";
 		Connection conn = pool.getConnection(); 
@@ -79,7 +89,13 @@ public class BooksDAO {
 		return book;
 	}
 
-	// 사용자가 선택한 장르에 맞는 추천도서 데이터베이스에서 arraylist로 만드는 함수
+	/**
+	 * 사용자가 선택한 장르에 맞는 추천도서 데이터베이스에서 arraylist로 만드는 함수
+	 * @param genre1
+	 * @param genre2
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<BooksDTO> selectRecommBook(String genre1, String genre2) throws SQLException{ 
 		String sql = "SELECT * FROM books WHERE genre IN ('" + genre1 + "', '" + genre2 + "') ORDER BY TO_NUMBER(bookid)";
 		Connection conn = pool.getConnection(); 
@@ -102,10 +118,18 @@ public class BooksDAO {
 		return books;
 	}
 	
+	/**
+	 * 찜 한 도서목록 출력 메서드
+	 * @param favoriteList
+	 * @return
+	 * @throws SQLException
+	 */
 	public ArrayList<BooksDTO> selectFavoriteBook(ArrayList<FavoriteDTO> favoriteList) throws SQLException{
 		Connection conn = pool.getConnection(); 
 		Statement stmt = conn.createStatement();
-		ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+		
+		ArrayList<BooksDTO> books = new ArrayList<BooksDTO>()
+				;
 		for(Object o : favoriteList) {
 			FavoriteDTO favor = (FavoriteDTO) o;
 			String sql = "select* from books where bookid = '" + favor.getBookID() + "'";
@@ -119,178 +143,188 @@ public class BooksDAO {
 			}
 			result.close();
 		}
+		
 		stmt.close();
 		pool.releaseConnection(conn);
 		return books;
-		
 	}
-	// 통합 검색(도서 제목, 출판사, 저자, 장르) 메서드
-	   public ArrayList<BooksDTO> selectSearch(String searchText) throws SQLException {
-	      String sql = "select * from books where title like '%" + searchText + 
-	            "%' or authors like '%" + searchText + 
-	            "%' or publisher like '%" + searchText + 
-	            "%' or genre like '%" + searchText + "%'";
-	      Connection conn = pool.getConnection(); 
-	      Statement stmt = conn.createStatement();
-	      ResultSet result = stmt.executeQuery(sql);
-	      
-	      BooksDTO book = null;
-	      ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
-	      
-	      while(result.next()) {
-	         book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
-	               result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
-	               result.getInt("PRICE"), result.getInt("VIEWS"));
-	         books.add(book);
-	      }
-	      
-	      result.close();
-	      stmt.close();
-	      pool.releaseConnection(conn);
-	      return books;
+	
+	/**
+	 * 통합 검색(도서 제목, 출판사, 저자, 장르) 메서드
+	 * @param searchText
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<BooksDTO> selectSearch(String searchText) throws SQLException {
+		String sql = "select * from books where title like '%" + searchText + "%' or authors like '%" + searchText
+				+ "%' or publisher like '%" + searchText + "%' or genre like '%" + searchText + "%'";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+
+		BooksDTO book = null;
+		ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+
+		while (result.next()) {
+			book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+					result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+					result.getInt("PRICE"), result.getInt("VIEWS"));
+			books.add(book);
+		}
+
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return books;
 	   }
-	// 도서 전체 목록 페이징 함수
-	   public ArrayList<BooksDTO> selectAllPaging(HttpServletRequest request) throws SQLException {
-	      int pg = 1;
-	      String strPg = request.getParameter("pg");
-	      if (strPg != null) {
-	         pg = Integer.parseInt(strPg);
-	      }
-	      
-	      int rowSize = 20;
-	      int start = (pg * rowSize) - (rowSize - 1);
-	      int end = pg * rowSize;
-	      int total = 0; // 총 게시물수
-	      
-	      String sql = "select count(*) from books";
-	      Connection conn = pool.getConnection();
-	      Statement stmt = conn.createStatement();
-	      ResultSet result = stmt.executeQuery(sql);
+	
+	/**
+	 * 도서 전체 목록 페이징 함수
+	 * @param request
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<BooksDTO> selectAllPaging(HttpServletRequest request) throws SQLException {
+		int pg = 1;
+		String strPg = request.getParameter("pg");
+		if (strPg != null) {
+			pg = Integer.parseInt(strPg);
+		}
 
-	      if (result.next()) {
-	         total = result.getInt(1);
-	      }
-	      
-	      System.out.println("시작 : " + start + " 끝:" + end);
-	      System.out.println("글의 수 : " + total);
+		int rowSize = 20;
+		int start = (pg * rowSize) - (rowSize - 1);
+		int end = pg * rowSize;
+		int total = 0; // 총 게시물수
 
-	      int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-	      // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-	      System.out.println("페이지수 : " + allPage);
+		String sql = "select count(*) from books";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
 
-	      int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
-	      int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
-	      // ((1-1)/10*10)
-	      int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
-	      if (toPage > allPage) { // 예) 20>17
-	         toPage = allPage;
-	      }
+		if (result.next()) {
+			total = result.getInt(1);
+		}
 
-	      HashMap map = new HashMap();
+		System.out.println("시작 : " + start + " 끝:" + end);
+		System.out.println("글의 수 : " + total);
 
-	      map.put("start", start);
-	      map.put("end", end);
-	      
-	      BooksDTO book = null;
-	      ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
-	      
-	      sql = "select * from " + 
-	            "(select A.*, ROWNUM r from " + 
-	            "(select * from books order by TO_NUMBER(bookid)) A) " + 
-	            "where r >= " + start + " and r <= " + end;
-	      result = stmt.executeQuery(sql);
-	      
-	      while(result.next()) {
-	         book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
-	               result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
-	               result.getInt("PRICE"), result.getInt("VIEWS"));
-	         books.add(book);
-	      }
-	      
-	      request.setAttribute("books", books);
-	      request.setAttribute("pg", pg);
-	      request.setAttribute("allPage", allPage);
-	      request.setAttribute("block", block);
-	      request.setAttribute("fromPage", fromPage);
-	      request.setAttribute("toPage", toPage);
-	      
-	      result.close();
-	      stmt.close();
-	      pool.releaseConnection(conn);
-	      
-	      return books;
-	   }
+		int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+		// int totalPage = total/rowSize + (total%rowSize==0?0:1);
+		System.out.println("페이지수 : " + allPage);
+
+		int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
+		int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
+		// ((1-1)/10*10)
+		int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
+		if (toPage > allPage) { // 예) 20>17
+			toPage = allPage;
+		}
+
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+
+		BooksDTO book = null;
+		ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+
+		sql = "select * from " + "(select A.*, ROWNUM r from " + "(select * from books order by TO_NUMBER(bookid)) A) "
+				+ "where r >= " + start + " and r <= " + end;
+		result = stmt.executeQuery(sql);
+
+		while (result.next()) {
+			book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+					result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+					result.getInt("PRICE"), result.getInt("VIEWS"));
+			books.add(book);
+		}
+
+		request.setAttribute("books", books);
+		request.setAttribute("pg", pg);
+		request.setAttribute("allPage", allPage);
+		request.setAttribute("block", block);
+		request.setAttribute("fromPage", fromPage);
+		request.setAttribute("toPage", toPage);
+
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return books;
+	}
 	   
-	   
-	   // 추천 도서 목록 페이징 메서드
-	   public ArrayList<BooksDTO> selectRecommBookPaging(HttpServletRequest request, String genre1, String genre2) throws SQLException {
-	      int pg = 1;
-	      String strPg = request.getParameter("pg");
-	      if (strPg != null) {
-	         pg = Integer.parseInt(strPg);
-	      }
+	/**
+	 * 추천 도서 목록 페이징 메서드
+	 * @param request
+	 * @param genre1
+	 * @param genre2
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<BooksDTO> selectRecommBookPaging(HttpServletRequest request, String genre1, String genre2)
+			throws SQLException {
+		int pg = 1;
+		String strPg = request.getParameter("pg");
+		if (strPg != null) {
+			pg = Integer.parseInt(strPg);
+		}
 
-	      int rowSize = 20;
-	      int start = (pg * rowSize) - (rowSize - 1);
-	      int end = pg * rowSize;
-	      int total = 0; // 총 추천 게시물수
+		int rowSize = 20;
+		int start = (pg * rowSize) - (rowSize - 1);
+		int end = pg * rowSize;
+		int total = 0; // 총 추천 게시물수
 
-	      String sql = "select count(*) from books where genre in ('" + genre1 + "', '" + genre2 + "')";
-	      Connection conn = pool.getConnection();
-	      Statement stmt = conn.createStatement();
-	      ResultSet result = stmt.executeQuery(sql);
+		String sql = "select count(*) from books where genre in ('" + genre1 + "', '" + genre2 + "')";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
 
-	      if (result.next()) {
-	         total = result.getInt(1);
-	      }
-	      
-	      System.out.println("시작 : " + start + " 끝:" + end);
-	      System.out.println("글의 수 : " + total);
+		if (result.next()) {
+			total = result.getInt(1);
+		}
 
-	      int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-	      // int totalPage = total/rowSize + (total%rowSize==0?0:1);
-	      System.out.println("페이지수 : " + allPage);
+		System.out.println("시작 : " + start + " 끝:" + end);
+		System.out.println("글의 수 : " + total);
 
-	      int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
-	      int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
-	      // ((1-1)/10*10)
-	      int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
-	      if (toPage > allPage) { // 예) 20>17
-	         toPage = allPage;
-	      }
+		int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+		// int totalPage = total/rowSize + (total%rowSize==0?0:1);
+		System.out.println("페이지수 : " + allPage);
 
-	      HashMap map = new HashMap();
+		int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
+		int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
+		// ((1-1)/10*10)
+		int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
+		if (toPage > allPage) { // 예) 20>17
+			toPage = allPage;
+		}
 
-	      map.put("start", start);
-	      map.put("end", end);
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
 
-	      BooksDTO book = null;
-	      ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
-	      
-	      sql = "select * from " + 
-	               "(select A.*, ROWNUM r from " + 
-	               "(select * from books where genre IN ('" + genre1 + "', '" + genre2 + "') order by TO_NUMBER(bookid)) A) " + 
-	               "where r >= " + start + " and r <= " + end;
-	      result = stmt.executeQuery(sql);
-	      
-	      while (result.next()) {
-	         book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
-	               result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
-	               result.getInt("PRICE"), result.getInt("VIEWS"));
-	         books.add(book);
-	      }
+		BooksDTO book = null;
+		ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
 
-	      request.setAttribute("books", books);
-	      request.setAttribute("pg", pg);
-	      request.setAttribute("allPage", allPage);
-	      request.setAttribute("block", block);
-	      request.setAttribute("fromPage", fromPage);
-	      request.setAttribute("toPage", toPage);
+		sql = "select * from " + "(select A.*, ROWNUM r from " + "(select * from books where genre IN ('" + genre1
+				+ "', '" + genre2 + "') order by TO_NUMBER(bookid)) A) " + "where r >= " + start + " and r <= " + end;
+		result = stmt.executeQuery(sql);
 
-	      result.close();
-	      stmt.close();
-	      pool.releaseConnection(conn);
+		while (result.next()) {
+			book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+					result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+					result.getInt("PRICE"), result.getInt("VIEWS"));
+			books.add(book);
+		}
 
-	      return books;
-	   }
+		request.setAttribute("books", books);
+		request.setAttribute("pg", pg);
+		request.setAttribute("allPage", allPage);
+		request.setAttribute("block", block);
+		request.setAttribute("fromPage", fromPage);
+		request.setAttribute("toPage", toPage);
+
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return books;
+	}
+	
 }

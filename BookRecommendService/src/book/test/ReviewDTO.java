@@ -24,6 +24,11 @@ public class ReviewDTO {
 	public ReviewDTO() {
 		super();
 	}
+	
+	public ReviewDTO(String reviewContent) {
+		super();
+		this.reviewContent = reviewContent;
+	}
 
 	@Override
 	public int hashCode() {
