@@ -13,22 +13,25 @@
         }
 
         #top {
-            height: auto; /* Auto height to fit content */
+            height: 180px; /* Auto height to fit content */
             width: 100%;
             background-color: #f0f0f0; /* Set your desired background color */
+            position: relative;
+    		overflow: hidden; /* 추가 */	
         }
 
-        #left {
-            width: 150px;
-            height: 80vh;
-            float: left;
-            background-color: #e0e0e0; /* Set your desired background color */
-        }
+       #left {
+		    width: 150px;
+		    height: 80vh;
+		    float: left;
+		    background-color: #e0e0e0; /* Set your desired background color */
+		}
 
         #right {
             margin-left: 150px; /* Match the width of the left frame */
             height: 80vh;
             background-color: #ffffff; /* Set your desired background color */
+            position: relative; /* 추가 */
         }
     </style>
 </head>

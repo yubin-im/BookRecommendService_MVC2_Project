@@ -253,8 +253,6 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     <% } %>
 </table>
 
-    
-
     <script>
     function addToFavorites() {
       	 window.location.href = "<%=request.getContextPath() %>/myPage/favoriteAction.jsp";

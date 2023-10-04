@@ -1,100 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>리뷰 작성</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        padding: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 작성</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin-top: 0; /* 여백 제거 */
+        }
 
-    h3 {
-        text-align: center;
-    }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
 
-    table {
-        border-collapse: collapse;
-        width: 60%;
-        margin: 20px auto;
-        background-color: #fff;
-        box-shadow: 0px 0px 10px #888888;
-    }
+        h3 {
+            text-align: center;
+        }
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: left;
-    }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
 
-    th {
-        background-color: #333;
-        color: #fff;
-    }
+        select, textarea {
+            width: 98%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+        .submit-button, .reset-button {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #fff;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
 
-    select, textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
+        .submit-button {
+            background-color: #007bff;
+        }
 
-    .submit-button {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+        .reset-button {
+            background-color: #ccc;
+        }
 
-    .reset-button {
-        background-color: #ccc;
-        color: #333;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-</style>
+        .button-container {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<form action="reviewAction.jsp">
-    <table>
-        <tr>
-            <th colspan="2"><h3>리뷰 작성칸</h3></th>
-        </tr>
-        <tr>
-            <td>별점</td>
-            <td>
-                <select name="rank">
-                    <option value="1">★</option>
-                    <option value="2">★★</option>
-                    <option value="3">★★★</option>
-                    <option value="4">★★★★</option>
-                    <option value="5">★★★★★</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <textarea name="reviewContent" rows="5" maxlength="150" placeholder="리뷰를 작성하세요 (최대 150자)"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
+    <div class="container">
+        <h3>리뷰 작성칸</h3>
+        <form action="reviewAction.jsp">
+            <label for="rank">별점</label>
+            <select name="rank" id="rank">
+                <option value="1">★</option>
+                <option value="2">★★</option>
+                <option value="3">★★★</option>
+                <option value="4">★★★★</option>
+                <option value="5">★★★★★</option>
+            </select>
+
+            <label for="reviewContent">리뷰</label>
+            <textarea name="reviewContent" id="reviewContent" rows="5" maxlength="150" placeholder="리뷰를 작성하세요 (최대 150자)"></textarea>
+
+            <div class="button-container">
                 <input type="submit" class="submit-button" value="리뷰 쓰기">
-                 <input type="reset" class="reset-button" value="취소">
-            </td>
-        </tr>
-    </table>
-</form>
+                <input type="reset" class="reset-button" value="취소">
+            </div>
+        </form>
+    </div>
 </body>
 </html>

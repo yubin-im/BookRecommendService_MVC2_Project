@@ -54,7 +54,7 @@ reviewDAO.insert(reviewDTO);
         리뷰가 성공적으로 제출되었습니다.
     </div>
     <a href="<%=request.getContextPath() %>/myPage/viewReview.jsp" class="go-to-reviews-button">내 리뷰 목록으로 가기</a>
-    <a href="<%=request.getContextPath() %>/main/bookDetail.jsp" class="link-button">돌아가기</a>
+    <a href="<%=request.getContextPath() %>/main/bookDetail.jsp" class="link-button">책으로 돌아가기</a>
 </div>
 </body>
 </html>
