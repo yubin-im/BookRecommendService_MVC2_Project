@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsersDAO {
@@ -44,7 +45,7 @@ public class UsersDAO {
 		
 		while (result.next()) {
 			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
-					result.getString("genre1"), result.getString("genre2"));
+					result.getString("genre1"), result.getString("genre2"), result.getString("email"));
 		}
 		
 		result.close();
@@ -69,7 +70,7 @@ public class UsersDAO {
 		
 		while (result.next()) {
 			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
-					result.getString("genre1"), result.getString("genre2"));
+					result.getString("genre1"), result.getString("genre2"), result.getString("email"));
 		}
 		
 		result.close();
@@ -93,13 +94,14 @@ public class UsersDAO {
 	public int insert(UsersDTO input) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		String sql = "insert into Users(userID, password, name, genre1, genre2)\r\n" + 
+		String sql = "insert into Users(userID, password, name, genre1, genre2, email)\r\n" + 
 				"	values( "
 				+ "'"+input.getUserID()+"',"
 				+ "'"+input.getPassword()+"', "
 				+ "'"+input.getName()+"',"
 				+ "'"+input.getGenre1()+"',"
-				+ "'"+input.getGenre2()+"')";
+				+ "'"+input.getGenre2() +"',"
+				+ "'"+input.getEmail() + "')";
 		int result = stmt.executeUpdate(sql);
 		
 		stmt.close();
@@ -145,6 +147,95 @@ public class UsersDAO {
 		 stmt.close();
 		 pool.releaseConnection(conn);
 		 return result;
+	}
+	/**
+	 * 회원정보 찾기에 사용되는 이메일 체크 함수
+	 * @return
+	 * @throws SQLException 
+	 */
+	public boolean checkEmail(String input) throws SQLException {
+		boolean bool = true;
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "select * from Users where email = '" + input + "'";
+		ResultSet result = stmt.executeQuery(sql);
+		if(result.next()) {
+			bool = true;
+		}
+		else {
+			bool = false;
+		}
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bool;
+	}
+	/**
+	 * 회원가입 시 아이디 중복체크
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean checkID(String input) throws SQLException {
+		boolean bool = true;
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "select * from Users where userID = '" + input + "'";
+		ResultSet result = stmt.executeQuery(sql);
+		if(result.next()) {
+			bool = true;
+		}
+		else {
+			bool = false;
+		}
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bool;
+	}
+	/**
+	 * 비밀번호 찾기에 활용
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
+	public String getPassword(String input) throws SQLException {
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "select * from Users where userID = '" + input + "'";
+		ResultSet result = stmt.executeQuery(sql);
+		UsersDTO users = null;
+		while (result.next()) {
+			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
+					result.getString("genre1"), result.getString("genre2"), result.getString("email"));
+		}
+		String password = users.getPassword();
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return password;
+	}
+	/**
+	 * 아이디 찾기에 활용
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<String> getUserID(String input) throws SQLException{
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = "select userID from Users where email = '" + input + "'";
+		ResultSet result = stmt.executeQuery(sql);
+		System.out.println(result);
+		ArrayList<String> userID = new ArrayList();
+		while (result.next()) {
+			userID.add(new String(result.getString("userID")));
+			System.out.println(userID);
+		}
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return userID;
 	}
 
 }

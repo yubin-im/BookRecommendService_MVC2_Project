@@ -335,7 +335,7 @@ public class BooksDAO {
 	 */
 	public double avgRank(String bookid) throws SQLException {
 		double avgRank = 0;
-		String sql = "select avg(rank) from reviews where bookid = '" + bookid + "'";
+		String sql = "select ROUND(avg(rank),1) from reviews where bookid = '" + bookid + "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);

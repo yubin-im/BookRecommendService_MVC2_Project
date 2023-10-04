@@ -5,7 +5,7 @@
 <title>Login Page</title>
 <style>
   body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f2f2f2;
@@ -55,11 +55,25 @@
     text-decoration: none;
     color: #3498db;
     font-weight: bold;
+    margin-right: 10px;
   }
   a:hover {
     color: #2980b9;
   }
 </style>
+<script>
+  function validateInput(inputElement) {
+    // 입력 필드의 값을 가져옵니다.
+    var inputValue = inputElement.value;
+    // 특수문자 중에서 '@'와 '.'만 입력할 수 있도록 정규표현식을 사용하여 확인합니다.
+    var pattern = /^[a-zA-Z0-9@.]*$/; // 알파벳, 숫자, '@', '.'만 허용하는 패턴
+    if (!pattern.test(inputValue)) {
+      alert("알파벳, 숫자, '@', '.'만 입력 가능합니다.");
+      // 특수문자를 삭제하고 유효한 문자만 남깁니다.
+      inputElement.value = inputValue.replace(/[^a-zA-Z0-9@.]/g, '');
+    }
+  }
+</script>
 </head>
 <body>
 <div class="container">
@@ -67,7 +81,7 @@
     <table>
       <tr>
         <td>ID :</td>
-        <td><input type="text" name="userID"></td>
+        <td><input type="text" name="userID" oninput="validateInput(this);"></td>
       </tr>
       <tr>
         <td>Password :</td>
@@ -81,11 +95,8 @@
       <tr>
         <td colspan="2" align="center">
           <a href="registerForm.jsp">회원가입</a>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" align="center">
-          <a href="registerForm.jsp">아이디, 비밀번호 찾기</a>
+          <a href="findUserIDForm.jsp">아이디 찾기</a>
+          <a href="findUserPasswordForm.jsp">비밀번호 찾기</a>
         </td>
       </tr>
     </table>

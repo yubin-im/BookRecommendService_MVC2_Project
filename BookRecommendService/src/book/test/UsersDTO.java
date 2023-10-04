@@ -8,15 +8,18 @@ public class UsersDTO {
 	private String name;
 	private String genre1;
 	private String genre2;
+	private String email;
 	
-	public UsersDTO(String userID, String password, String name, String genre1, String genre2) {
+	public UsersDTO(String userID, String password, String name, String genre1, String genre2, String email) {
 		super();
 		this.userID = userID;
 		this.password = password;
 		this.name = name;
 		this.genre1 = genre1;
 		this.genre2 = genre2;
+		this.email = email;
 	}
+	
 	public UsersDTO(String userID, String password) {
 		super();
 		this.userID = userID;
@@ -64,11 +67,19 @@ public class UsersDTO {
 	public void setGenre2(String genre2) {
 		this.genre2 = genre2;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
 		return "UsersDTO [userID=" + userID + ", password=" + password + ", name=" + name + ", genre1=" + genre1
-				+ ", genre2=" + genre2 + "]";
+				+ ", genre2=" + genre2 + ", email=" + email + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

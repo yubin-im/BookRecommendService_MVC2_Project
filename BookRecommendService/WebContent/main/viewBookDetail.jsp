@@ -105,6 +105,14 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     		color: gray; /* 빈 별 아이콘의 색상 */
 		}
 		}
+
+    /* 이전 스타일 코드... */
+
+    /* 리뷰 쓰기 및 책 사기 버튼 스타일 */
+    #writeReviewButton, #buyBookButton {
+        margin-top: 20px; /* 버튼 위쪽에 10px 간격 추가 */
+        margin-bottom: 20px; 
+    }
 </style>
 </head>
 <body>
