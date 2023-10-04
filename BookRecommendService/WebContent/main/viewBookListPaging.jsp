@@ -10,51 +10,56 @@
 <meta charset="UTF-8">
 <title>viewBookList</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f3f3f3;
-    }
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f3f3f3;
+}
+.main-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 20px auto;
+	background-color: #ffffff;
+	box-shadow: 0px 0px 10px #888888;
+}
 
-    .main-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px auto;
-        background-color: #ffffff;
-        box-shadow: 0px 0px 10px #888888;
-    }
+.main-table th, .main-table td {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
 
-    .main-table th, .main-table td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
+.main-table th {
+	background-color: #f2f2f2;
+}
 
-    .main-table th {
-        background-color: #f2f2f2;
-    }
+.main-table tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
 
-    .main-table tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+.paging-table {
+	width: 600px;
+	margin: 0 auto;
+}
 
-    .paging-table {
-        width: 600px;
-        margin: 0 auto;
-    }
-    
-    /* 추가된 CSS 스타일 */
-    .paging-table td {
-        text-align: center;
-    }
-    
-    .blue-text {
-    color: green;
-    text-align: center;
-	}
+/* 추가된 CSS 스타일 */
+.paging-table td {
+	text-align: center;
+}
+
+.green-text {
+	color: green;
+	text-align: center;
+}
+
+.main-table th {
+    background-color: #f2f2f2;
+    text-align: center; /* 헤더 텍스트 가운데 정렬 추가 */
+}
 </style>
 </head>
 <body>
-   <h4 class="blue-text">"평균 별점이 가장 높은 도서: <%=request.getAttribute("title") %>"</h4>
+   <h4 class="green-text">"평균 별점이 가장 높은 도서: <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bookid")%>" target="right"><%=request.getAttribute("title") %>"</a></h4>
+   <h4 class="green-text">"베스트 리뷰: <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bestReviewBookID")%>" target="right"><%=request.getAttribute("bestReview")%> (도서: <%=request.getAttribute("bestReviewTitle") %>)"</a></h4>
    
    <!-- 통합 검색 -->
    <div style="text-align: right;">

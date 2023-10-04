@@ -50,8 +50,8 @@
 <body>
     <div class="container">
         <h1>Error</h1>
-        <p class="error-message">잘못된 경로입니다.</p>
-        <a href="loginForm.html" class="back-link">로그인 창으로 이동</a>
+        <p class="error-message">아이디가 중복되었습니다.</p>
+        <a href="registerForm.jsp" class="back-link">회원가입 창으로 이동</a>
     </div>
 </body>
 </html>

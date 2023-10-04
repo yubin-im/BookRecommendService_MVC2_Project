@@ -335,7 +335,7 @@ public class BooksDAO {
 	 */
 	public double avgRank(String bookid) throws SQLException {
 		double avgRank = 0;
-		String sql = "select ROUND(avg(rank),1) from reviews where bookid = '" + bookid + "'";
+		String sql = "select avg(rank) from reviews where bookid = '" + bookid + "'";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
@@ -402,5 +402,28 @@ public class BooksDAO {
 		pool.releaseConnection(conn);
 		return title;
 	}
+	
+	/***
+	 * 평균 별점이 가장 높은 도서의 bookid 리턴
+	 * @return
+	 * @throws SQLException
+	 */
+	public String bestRankBookID() throws SQLException {
+		String bookid = "";
+		String sql = "SELECT bookid FROM (SELECT bookid, AVG(rank) AS average_rank FROM reviews GROUP BY bookid ORDER BY average_rank DESC) WHERE ROWNUM = 1";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bookid = result.getString(1);
+		}
+		
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bookid;
+	}
+	
 	
 }

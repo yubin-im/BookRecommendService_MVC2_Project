@@ -33,6 +33,7 @@
 
     .main-table th {
         background-color: #f2f2f2;
+        text-align: center;
     }
 
     .main-table tr:nth-child(even) {

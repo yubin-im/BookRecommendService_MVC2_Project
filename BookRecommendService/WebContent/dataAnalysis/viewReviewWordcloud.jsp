@@ -31,7 +31,6 @@ function calculateSize() {
     return Math.floor(Math.random() * (40 - 10 + 1)) + 10;
 }
 
-
 // 랜덤한 RGB 색상을 생성하는 함수
 function randomColor() {
     var r = Math.floor(Math.random() * 256);
@@ -71,8 +70,8 @@ window.onload = function() {
                 return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
             })
             .text(function(d) { return d.text; });
-    	}
-	};
+    }
+};
 </script>
 </body>
 </html>

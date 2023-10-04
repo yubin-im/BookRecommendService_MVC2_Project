@@ -44,7 +44,12 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     th, td {
         border: 1px solid #ddd;
         padding: 10px;
-        text-align: left;
+        text-align: center; /* 테이블 내용을 가운데 정렬 */
+    }
+
+    /* 다음 두 라인은 테이블의 thead에 있는 모든 th 엘리먼트에 적용됩니다. */
+    table thead th {
+        text-align: center;
     }
 
     th {
@@ -68,21 +73,22 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     .heart-button:hover {
         color: red;
     }
+    
     .delete-button {
-    background-color: #f44336; /* 기존 빨간색 유지 */
+    background-color: #f44336;
     color: white;
     border: none;
-    padding: 8px 15px; /* 변경된 스타일 */
-    border-radius: 5px; /* 변경된 스타일 */
+    padding: 8px 15px;
+    border-radius: 5px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
-	}
-	
-	.update-button {
-        background-color: #007bff; /* 파란색으로 변경 */
+    }
+    
+    .update-button {
+        background-color: #007bff;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -93,26 +99,25 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
         display: inline-block;
         font-size: 14px;
     }
-      .star-rating {
-    	font-size: 18px; /* 별 아이콘 크기 조절 */
-    	display: inline-block; /* 가로 정렬을 위해 인라인 블록으로 설정 */
-    	
-		.star-filled {
-    		color: gold; /* 채워진 별 아이콘의 색상 */
-		}
-
-		.star-empty {
-    		color: gray; /* 빈 별 아이콘의 색상 */
-		}
-		}
-
-    /* 이전 스타일 코드... */
-
-    /* 리뷰 쓰기 및 책 사기 버튼 스타일 */
-    #writeReviewButton, #buyBookButton {
-        margin-top: 20px; /* 버튼 위쪽에 10px 간격 추가 */
-        margin-bottom: 20px; 
+    
+    .star-rating {
+    font-size: 18px;
+    display: inline-block;
+        
+    .star-filled {
+    color: gold;
     }
+    
+    .star-empty {
+    color: gray;
+    }
+    }
+
+    #writeReviewButton, #buyBookButton {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
 </style>
 </head>
 <body>

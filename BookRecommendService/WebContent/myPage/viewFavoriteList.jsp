@@ -28,6 +28,7 @@
 
     th {
         background-color: #f2f2f2;
+        text-align: center;
     }
 
     tr:nth-child(even) {

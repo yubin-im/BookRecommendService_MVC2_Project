@@ -126,4 +126,78 @@ public class ReviewLikesDAO {
 		return result;
 	}
 	
+	/**
+	 * 좋아요 수를 가장 많이 받은 리뷰 리턴 메서드
+	 * @return
+	 * @throws SQLException
+	 */
+	public String bestReview() throws SQLException {
+		String bestReview = "";
+		String sql = "SELECT reviewcontent FROM reviews WHERE likes = (SELECT MAX(likes) FROM reviews)";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bestReview = result.getString(1);
+		}
+
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bestReview;
+	}
+	
+	/***
+	 * 좋아요 수를 가장 많이 받은 리뷰의 도서 제목 리턴 메서드
+	 * @return
+	 * @throws SQLException
+	 */
+	public String bestReviewTitle() throws SQLException {
+		String bestReviewBookID = "";
+		String bestReviewTitle = "";
+		String sql = "SELECT bookid FROM reviews WHERE likes = (SELECT MAX(likes) FROM reviews)";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bestReviewBookID = result.getString(1);
+		}
+		
+		sql = "select title from books where bookid = '" + bestReviewBookID + "'";
+		result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bestReviewTitle = result.getString(1);
+		}
+		
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bestReviewTitle;
+	}
+	
+	/***
+	 * 좋아요 수를 가장 많이 받은 리뷰 도서의 bookid 리턴
+	 * @return
+	 * @throws SQLException
+	 */
+	public String bestReviewBookID() throws SQLException {
+		String bestReviewBookID = "";
+		String sql = "SELECT bookid FROM reviews WHERE likes = (SELECT MAX(likes) FROM reviews)";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bestReviewBookID = result.getString(1);
+		}
+		
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bestReviewBookID;
+	}
+	
 }
