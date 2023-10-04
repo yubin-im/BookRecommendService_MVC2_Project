@@ -32,32 +32,37 @@
         display: block;
         margin-top: 20px;
         font-size: 16px;
-        color: #007bff;
-        text-decoration: none;
-    }
-     .go-to-reviews-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007bff;
         color: #fff;
         text-decoration: none;
         border-radius: 5px;
-    }
-     .go-back-button {
-        display: inline-block;
         padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
     }
+	.go-to-reviews-button {
+	    background-color: #007bff; /* 파란색 */
+	    color: #fff;
+	}
+	
+	.go-to-reviews-button:hover {
+	    background-color: #0056b3; /* 파란색 (호버 시 더 진한 파란색) */
+	}
+	
+	.go-back-button {
+	    background-color: #ff6347; /* 빨간색 */
+	    color: #fff;
+	}
+	
+	.go-back-button:hover {
+	    background-color: #cc0000; /* 빨간색 (호버 시 더 진한 빨간색) */
+	}
+
+
 </style>
 </head>
 <body>
 <div class="container">
     <h1>찜 결과</h1>
-    <p><%= book.getTitle() %>이</p>
-    <p><%=session.getAttribute("result") %></p>
+    <p><%=book.getTitle()%> 이(가)</p>
+    <p><%= session.getAttribute("result")%></p>
     <a href="<%=request.getContextPath() %>/myPage/favoriteListAction.jsp" class="go-to-reviews-button">찜 목록으로 이동</a>
     <a href="<%=request.getContextPath() %>/main/bookDetail.jsp" class="go-back-button">돌아가기</a>
 </div>

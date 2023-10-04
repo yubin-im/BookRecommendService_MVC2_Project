@@ -58,9 +58,18 @@ body {
 </style>
 </head>
 <body>
-   <h4 class="green-text">"평균 별점이 가장 높은 도서: <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bookid")%>" target="right"><%=request.getAttribute("title") %>"</a></h4>
-   <h4 class="green-text">"베스트 리뷰: <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bestReviewBookID")%>" target="right"><%=request.getAttribute("bestReview")%> (도서: <%=request.getAttribute("bestReviewTitle") %>)"</a></h4>
-   
+<h4 class="green-text">
+    <span style="font-weight: bold;">평균 별점이 가장 높은 도서:</span>
+    <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bookid")%>" target="right" style="text-decoration: none; color: #007BFF;">
+        <%=request.getAttribute("title") %>
+    </a>
+</h4>
+<h4 class="green-text">
+    <span style="font-weight: bold;">베스트 리뷰:</span>
+    <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bestReviewBookID")%>" target="right" style="text-decoration: none; color: #007BFF;">
+        <%=request.getAttribute("bestReview")%> (도서: <%=request.getAttribute("bestReviewTitle") %>)
+    </a>
+</h4>
    <!-- 통합 검색 -->
    <div style="text-align: right;">
         <form action="bookSearch.jsp" method="GET">

@@ -22,9 +22,9 @@ public class FavoriteService {
 		
 		//int 결과값에 따라 view에 보여줄 실제 문자열 데이터를 만들어 return.
 		if (result2) {
-			this.result = "찜이 완료되었습니다";
+			this.result = "찜 목록에 추가 되었습니다.";
 		} else {
-			this.result = "찜에서 삭제되었습니다";
+			this.result = "찜 목록에서 삭제 되었습니다.";
 		}
 		System.out.println("여기는 service insert " + result2);
 		return this.result;

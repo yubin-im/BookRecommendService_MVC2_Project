@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" errorPage="myPageError.jsp"%>
 <jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
 <jsp:useBean id="reviewDAO" class="book.test.ReviewDAO" scope="application"/>
 <jsp:useBean id="reviewDTO" class="book.test.ReviewDTO" scope="request"/>

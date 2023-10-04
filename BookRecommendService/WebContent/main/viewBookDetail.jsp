@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"  %>
+    pageEncoding="UTF-8"  errorPage="mainError.jsp"%>
 <!--     errorPage="mainError.jsp" -->
 <%@ page import="book.test.*, java.util.*" %>
 <jsp:useBean id="book" type="book.test.BooksDTO" scope="session"/>
@@ -117,7 +117,32 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    /* 공통 스타일 */
+    .custom-button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+    }
 
+    /* 리뷰쓰기 버튼 스타일 */
+    #writeReviewButton {
+        font-size: 16px; /* 폰트 크기 조정 */
+    }
+
+    /* 책 사기 버튼 스타일 */
+    #buyBookButton {
+    	font-size: 16px;
+        background-color: #4CAF50; /* 다른 배경색 사용 */
+    }
+
+    /* 버튼 호버(마우스 오버) 효과 */
+    .custom-button:hover {
+        background-color: #0056b3; /* 호버 시 배경색 변경 */
+    }
 </style>
 </head>
 <body>
@@ -148,11 +173,11 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     </table>
         <!-- 리뷰쓰기 버튼 추가 -->
 <div style="text-align: center;">
-    <button id="writeReviewButton" onclick="writeReview()" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+    <button id="writeReviewButton" class="custom-button" onclick="writeReview()">
         리뷰쓰기
     </button>
     <!-- 책 사기 버튼 추가 -->
-    <button id="buyBookButton" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+    <button id="buyBookButton" class="custom-button">
         책 사기
     </button>
 </div>
