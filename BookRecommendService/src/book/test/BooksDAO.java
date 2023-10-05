@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -381,7 +382,12 @@ public class BooksDAO {
 	public String bestRankBook() throws SQLException {
 		String bookid = "";
 		String title = "";
-		String sql = "SELECT bookid FROM (SELECT bookid, AVG(rank) AS average_rank FROM reviews GROUP BY bookid ORDER BY average_rank DESC) WHERE ROWNUM = 1";
+		String sql = "SELECT bookid " +
+                "FROM (SELECT bookid, AVG(rank) AS average_rank, COUNT(*) AS review_count " +
+                "      FROM reviews " +
+                "      GROUP BY bookid " +
+                "      ORDER BY AVG(rank) DESC, COUNT(*) DESC) " +
+                "WHERE ROWNUM = 1";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
@@ -410,7 +416,12 @@ public class BooksDAO {
 	 */
 	public String bestRankBookID() throws SQLException {
 		String bookid = "";
-		String sql = "SELECT bookid FROM (SELECT bookid, AVG(rank) AS average_rank FROM reviews GROUP BY bookid ORDER BY average_rank DESC) WHERE ROWNUM = 1";
+		String sql = "SELECT bookid " +
+                "FROM (SELECT bookid, AVG(rank) AS average_rank, COUNT(*) AS review_count " +
+                "      FROM reviews " +
+                "      GROUP BY bookid " +
+                "      ORDER BY AVG(rank) DESC, COUNT(*) DESC) " +
+                "WHERE ROWNUM = 1";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
@@ -425,5 +436,54 @@ public class BooksDAO {
 		return bookid;
 	}
 	
+	/***
+	 * 각 장르별 도서의 수 리턴
+	 * @return
+	 * @throws SQLException
+	 */
+	public Map<String, Integer> getGenreCounts() throws SQLException {
+        String sql = "SELECT genre, COUNT(*) as genre_count FROM books GROUP BY genre";
+        Connection conn = pool.getConnection(); 
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+        
+        Map<String, Integer> genreCounts = new HashMap<>();
+        
+        while (result.next()) {
+            String genre = result.getString("genre");
+            int count = result.getInt("genre_count");
+            genreCounts.put(genre, count);
+        }
+        
+        result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+        return genreCounts;
+    }
+	
+	/***
+	 * 연도 별 출간 도서 수 리턴
+	 * @return
+	 * @throws SQLException
+	 */
+	public Map<String, Integer> getYearCounts() throws SQLException {
+        String sql = "SELECT TO_CHAR(publicationdate, 'YYYY') AS publication_year, COUNT(*) AS publicationdate_count FROM books GROUP BY TO_CHAR(publicationdate, 'YYYY')";
+        Connection conn = pool.getConnection(); 
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+        
+        Map<String, Integer> getYearCounts = new HashMap<>();
+        
+        while (result.next()) {
+            String publicationDate = result.getString("publication_year");
+            int count = result.getInt("publicationdate_count");
+            getYearCounts.put(publicationDate, count);
+        }
+        
+        result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+        return getYearCounts;
+    }
 	
 }

@@ -39,7 +39,7 @@
     <div class="container">
         <h1>잘못된 경로입니다.</h1>
         <p>원하는 페이지를 찾을 수 없습니다.</p>
-        <p><a href="<%=request.getContextPath() %>/login/loginForm.html">로그인 창으로 돌아가기</a></p>
+        <p><a href="<%=request.getContextPath() %>/login/loginForm.html" target = "_top">로그인 창으로 돌아가기</a></p>
     </div>
 </body>
 </html>

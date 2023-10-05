@@ -83,7 +83,7 @@
 		<li><a href="<%=request.getContextPath() %>/main/bookListPaging.jsp" target="right">메인</a></li>
     	<li><a href="<%=request.getContextPath() %>/myPage/recommBookPaging.jsp" target="right">추천도서</a></li>
         <li><a href="<%=request.getContextPath() %>/myPage/viewMyPage.jsp" target="right">마이페이지</a></li>
-        <li><a href="<%=request.getContextPath() %>/dataAnalysis/reviewWordcloud.jsp" target="right">실시간 트렌드</a></li>
+        <li><a href="<%=request.getContextPath() %>/dataAnalysis/viewDataAnalysis.jsp" target="right">실시간 트렌드</a></li>
         <!-- 로그아웃 링크 추가 -->
         <li><a href="<%=request.getContextPath() %>/login/logoutAction.jsp" target="_top">로그아웃</a></li>
     </ul>

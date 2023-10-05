@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.*, book.test.*" errorPage="/main/top.html"%>
+    pageEncoding="UTF-8" import="java.util.*, book.test.*"%>
 <jsp:useBean id="reviews" type="java.util.ArrayList" scope="request"/>
 <!DOCTYPE html>
 <html>
