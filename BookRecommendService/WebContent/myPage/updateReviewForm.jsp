@@ -5,39 +5,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>리뷰 수정</title>
+<!-- Bootstrap CSS 추가 -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style>
     body {
-        font-family: Arial, sans-serif;
         background-color: #f4f4f4;
         padding: 20px;
     }
 
-    h3 {
-        text-align: center;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 60%;
-        margin: 20px auto;
+    .container {
         background-color: #fff;
         box-shadow: 0px 0px 10px #888888;
+        padding: 20px;
+        border-radius: 5px;
     }
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #333;
-        color: #fff;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
+    h3 {
+        text-align: center;
     }
 
     select, textarea {
@@ -45,6 +30,7 @@
         padding: 10px;
         border: 1px solid #ddd;
         border-radius: 5px;
+        margin-bottom: 10px;
     }
 
     .submit-button {
@@ -67,38 +53,50 @@
         font-size: 16px;
     }
 </style>
+<script>
+function validateForm() {
+    var rank = document.forms["reviewForm"]["rank"].value;
+    var reviewContent = document.forms["reviewForm"]["reviewContent"].value;
+
+    if (rank === "0") {
+        alert("별점을 선택해주세요.");
+        return false;
+    }
+
+    if (reviewContent.trim() === "") {
+        alert("리뷰 내용을 작성해주세요.");
+        return false;
+    }
+
+    return true;
+}
+</script>
 </head>
 <body>
-	<form action="updateReviewAction.jsp">
-	 <input type="hidden" name="bookID" value="<%= request.getParameter("bookID") %>">
-    <table>
-        <tr>
-            <th colspan="2"><h3>리뷰 작성칸</h3></th>
-        </tr>
-        <tr>
-            <td>별점</td>
-            <td>
-                <select name="rank">
+    <div class="container">
+        <form name="reviewForm" action="updateReviewAction.jsp" onsubmit="return validateForm()">
+            <input type="hidden" name="bookID" value="<%= request.getParameter("bookID") %>">
+            <h3>리뷰 수정</h3>
+            <div class="form-group">
+                <label for="rank">별점</label>
+                <select class="form-control" name="rank">
+                    <option value="0">선택해주세요</option>
                     <option value="1">★</option>
                     <option value="2">★★</option>
                     <option value="3">★★★</option>
                     <option value="4">★★★★</option>
                     <option value="5">★★★★★</option>
                 </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <textarea name="reviewContent" rows="5" maxlength="150" placeholder="<%=request.getParameter("reviewContent")%>"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" class="submit-button" value="리뷰 수정">
-                <input type="reset" class="reset-button" value="취소">
-            </td>
-        </tr>
-    </table>
-</form>
+            </div>
+            <div class="form-group">
+                <label for="reviewContent">리뷰 내용</label>
+                <textarea class="form-control" name="reviewContent" rows="5" maxlength="150" placeholder="<%=request.getParameter("reviewContent")%>"></textarea>
+            </div>
+            <div class="text-center">
+                <input type="submit" class="btn btn-primary submit-button" value="리뷰 수정">
+                <input type="reset" class="btn btn-secondary reset-button" value="취소">
+            </div>
+        </form>
+    </div>
 </body>
 </html>

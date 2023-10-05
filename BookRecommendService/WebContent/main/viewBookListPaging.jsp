@@ -55,6 +55,23 @@ body {
     background-color: #f2f2f2;
     text-align: center; /* 헤더 텍스트 가운데 정렬 추가 */
 }
+.section-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+.section-header a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.section-header a:hover {
+    text-decoration: underline;
+}
 </style>
 </head>
 <body>

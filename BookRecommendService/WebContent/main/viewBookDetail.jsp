@@ -146,30 +146,25 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
 </style>
 </head>
 <body>
-<table border="1" style="width: 90%; background-color: #f4f4f4; padding: 10px; box-shadow: none;">
-    <tr style="background-color: #f4f4f4;">
-        <th style="text-align: center;" >
-            <p style="font-size: 20px; color: green;">평균 별점</p>
-        </th>
-        <th style="text-align: center;">
-            <p style="font-size: 20px; color: green;">찜한 사람의 수</p>
-        </th>
-        <th style="text-align: center;">
-            <p style="font-size: 20px; color: green;">베스트 리뷰</p>
-        </th>
-    </tr>
-    <tr>
-        <td style="text-align: center;">
-            <div id="star-rating" style="font-size: 24px; color: #333;"></div>
-        </td>
-        <td style="text-align: center;">
-            <p style="font-size: 24px; color: #333;"><%=request.getAttribute("favoriteCount") %></p>
-        </td>
-        <td style="text-align: center;">
-            <p style="font-size: 18px; color: #333;"><%=request.getAttribute("bestReview") %></p>
-        </td>
-    </tr>
-</table>
+<div style="width: 70%; /* 가로 넓이를 조절합니다 */ margin: 0 auto; /* 가운데 정렬을 위한 margin 설정 */ background-color: #f4f4f4; padding: 10px; box-shadow: none;">
+    <div style="background-color: #f4f4f4; display: flex; justify-content: space-around;">
+        <div style="text-align: center;">
+            <p style="font-size: 15px; color: green; font-weight: bold;">평균 별점</p> <!-- 폰트 크기를 조절합니다 -->
+            <div id="star-rating" style="font-size: 18px; color: #333;"></div> <!-- 폰트 크기를 조절합니다 -->
+        </div>
+        <div style="text-align: center;">
+            <p style="font-size: 15px; color: green; font-weight: bold;">찜한 사람의 수</p> <!-- 폰트 크기를 조절합니다 -->
+            <p style="font-size: 15px; color: #333;"><%=request.getAttribute("favoriteCount") %></p>
+        </div>
+        <div style="text-align: center;">
+            <p style="font-size: 15px; color: green; font-weight: bold;">베스트 리뷰</p> <!-- 폰트 크기를 조절합니다 -->
+            <div style="font-size: 15px; color: #333; max-width: 800px;">
+                "<%=request.getAttribute("bestReview") %>"
+            </div> <!-- 폰트 크기를 조절하고, 최대 높이, 스크롤바 설정 -->
+        </div>
+    </div>
+</div>
+
 
     <table border="1" style="width: 90%; margin: 20px auto; background-color: #fff; box-shadow: 0px 0px 10px #888888;">
         <thead>
@@ -205,76 +200,79 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     </button>
 </div>
 	
-<table border="1" style="width: 90%; margin: 0 auto;">
-    <thead>
-        <tr>
-            <th>이름</th>
-            <th>평점</th>
-            <th>리뷰내용</th>
-            <th>좋아요</th>
-            <th>삭제</th>
-        </tr>
-    </thead>
-    
-    <% if (reviews == null || reviews.isEmpty()) { %>
-        <tr>
-            <td colspan="5">작성된 리뷰가 없습니다. 리뷰를 작성해주세요.</td>
-        </tr>
-    <% } else { %>
-        <% for (Object o : reviews) {
-            ReviewDTO review = (ReviewDTO) o;
-            String loggedInUserID = login.getUserID();
-            String reviewUserID = review.getUserID();
-            String reviewBookID = review.getBookID();
-            likeDTO = new ReviewLikesDTO(reviewUserID, reviewBookID, login.getUserID());
-            boolean canDeleteReview = loggedInUserID.equals(reviewUserID);
-            boolean thumdsUp = likeDAO.check(likeDTO);
-			String userName = reviewDAO.userName(review.getUserID());
-        %>
+<div style="width: 90%; margin: 0 auto;">
+    <h2 style="font-weight: bold; color: green; text-align: center;">도서 리뷰</h2>
+    <table border="1" style="width: 100%; background-color: #fff; box-shadow: 0px 0px 10px #888888;">
+        <thead>
             <tr>
-                <td><%=userName %></td>
-                <td>
-    			<div class="star-rating">
-        			<% int rank = review.getRank(); %>
-        			<% for (int i = 1; i <= 5; i++) { %>
-            				<% if (i <= rank) { %>
-                			<i class="fas fa-star star-filled"></i> <!-- 별 아이콘 (채워진 별) -->
-            			<% } else { %>
-                			<i class="far fa-star star-empty"></i> <!-- 빈 별 아이콘 -->
-            			<% } %>
-        			<% } %>
-    			</div>
-				</td>
-                <td style="max-width:600px; word-wrap: break-word;"><%= review.getReviewContent() %></td>
-                <td>
-                    <a href="likeAction.jsp?bookID=<%= review.getBookID() %>&userID=<%= review.getUserID() %>" class="like-button">
-                    <% if (thumdsUp) { %>
-                        <i class="far fa-thumbs-up"></i>
-                    <% } else { %>
-                        <i class="far fa-thumbs-down"></i>
-                    <% } %>
-                    <%= review.getLikes() %>
-                    </a>
-                </td>
-                <td>
-                    <% if (canDeleteReview) { %>
-                        <div style="display: flex; justify-content: space-around;">
-                            <form id="deleteForm<%= review.getBookID() %>" action="<%= request.getContextPath() %>/myPage/deleteReviewAction.jsp" method="post">
-                                <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
-                                <button type="button" class="delete-button" onclick="confirmDelete('<%= review.getBookID() %>')">리뷰 삭제</button>
-                            </form>
-                            <form id="updateForm<%= review.getBookID() %>" action="<%= request.getContextPath() %>/myPage/updateReviewForm.jsp" method="post">
-                                <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
-                                <input type="hidden" name="reviewContent" value="<%= review.getReviewContent() %>">
-                                <button type="button" class="update-button" onclick="goToUpdateReview('<%= review.getBookID() %>')">리뷰 수정</button>
-                            </form>
-                        </div>
-                    <% } %>
-                </td>
+                <th>이름</th>
+                <th>평점</th>
+                <th>리뷰내용</th>
+                <th>좋아요</th>
+                <th>삭제</th>
             </tr>
+        </thead>
+        <!-- 리뷰 데이터 표시 -->
+        <% if (reviews == null || reviews.isEmpty()) { %>
+            <tr>
+                <td colspan="5">작성된 리뷰가 없습니다. 리뷰를 작성해주세요.</td>
+            </tr>
+        <% } else { %>
+            <% for (Object o : reviews) {
+                ReviewDTO review = (ReviewDTO) o;
+                String loggedInUserID = login.getUserID();
+                String reviewUserID = review.getUserID();
+                String reviewBookID = review.getBookID();
+                likeDTO = new ReviewLikesDTO(reviewUserID, reviewBookID, login.getUserID());
+                boolean canDeleteReview = loggedInUserID.equals(reviewUserID);
+                boolean thumdsUp = likeDAO.check(likeDTO);
+                String userName = reviewDAO.userName(review.getUserID());
+            %>
+                <tr>
+                    <td><%=userName %></td>
+                    <td>
+                        <div class="star-rating">
+                            <% int rank = review.getRank(); %>
+                            <% for (int i = 1; i <= 5; i++) { %>
+                                <% if (i <= rank) { %>
+                                    <i class="fas fa-star star-filled"></i> <!-- 별 아이콘 (채워진 별) -->
+                                <% } else { %>
+                                    <i class="far fa-star star-empty"></i> <!-- 빈 별 아이콘 -->
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </td>
+                    <td style="max-width:600px; word-wrap: break-word;"><%= review.getReviewContent() %></td>
+                    <td>
+                        <a href="likeAction.jsp?bookID=<%= review.getBookID() %>&userID=<%= review.getUserID() %>" class="like-button">
+                            <% if (thumdsUp) { %>
+                                <i class="far fa-thumbs-up"></i>
+                            <% } else { %>
+                                <i class="far fa-thumbs-down"></i>
+                            <% } %>
+                            <%= review.getLikes() %>
+                        </a>
+                    </td>
+                    <td>
+                        <% if (canDeleteReview) { %>
+                            <div style="display: flex; justify-content: space-around;">
+                                <form id="deleteForm<%= review.getBookID() %>" action="<%= request.getContextPath() %>/myPage/deleteReviewAction.jsp" method="post">
+                                    <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+                                    <button type="button" class="delete-button" onclick="confirmDelete('<%= review.getBookID() %>')">리뷰 삭제</button>
+                                </form>
+                                <form id="updateForm<%= review.getBookID() %>" action="<%= request.getContextPath() %>/myPage/updateReviewForm.jsp" method="post">
+                                    <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
+                                    <input type="hidden" name="reviewContent" value="<%= review.getReviewContent() %>">
+                                    <button type="button" class="update-button" onclick="goToUpdateReview('<%= review.getBookID() %>')">리뷰 수정</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </td>
+                </tr>
+            <% } %>
         <% } %>
-    <% } %>
-</table>
+    </table>
+</div>
 
     <script>
     function addToFavorites() {
@@ -286,7 +284,7 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
     // 리뷰를 이미 작성했는지 확인
     if (<%= isReviewCheck %>) {
         // 아직 리뷰를 작성하지 않은 경우
-        window.location.href = "<%=request.getContextPath() %>/myPage/reviewForm.html";
+    	  window.location.href = "<%=request.getContextPath() %>/myPage/reviewForm.html";
        
     } else {
     	 // 이미 리뷰를 작성한 경우
