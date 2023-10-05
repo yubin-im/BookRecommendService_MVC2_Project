@@ -59,17 +59,23 @@ body {
 </head>
 <body>
 <h4 class="green-text">
-    <span style="font-weight: bold;">평균 별점이 가장 높은 도서:</span>
+    <span style="font-weight: bold;">평균별점이 가장 높은 도서 : </span>
     <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bookid")%>" target="right" style="text-decoration: none; color: #007BFF;">
         <%=request.getAttribute("title") %>
     </a>
 </h4>
 <h4 class="green-text">
-    <span style="font-weight: bold;">베스트 리뷰:</span>
-    <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bestReviewBookID")%>" target="right" style="text-decoration: none; color: #007BFF;">
-        <%=request.getAttribute("bestReview")%> (도서: <%=request.getAttribute("bestReviewTitle") %>)
+    <span style="font-weight: bold;">찜한 유저가 가장 많은 도서 : </span>
+    <a href="bookDetail.jsp?bookID=<%=request.getAttribute("favorBookid")%>" target="right" style="text-decoration: none; color: #007BFF;">
+        <%=request.getAttribute("favorTitle") %>
     </a>
 </h4>
+<!-- <h4 class="green-text"> -->
+<!--     <span style="font-weight: bold;">베스트 리뷰:</span> -->
+<%--     <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bestReviewBookID")%>" target="right" style="text-decoration: none; color: #007BFF;"> --%>
+<%--         <%=request.getAttribute("bestReview")%> (도서: <%=request.getAttribute("bestReviewTitle") %>) --%>
+<!--     </a> -->
+<!-- </h4> -->
    <!-- 통합 검색 -->
    <div style="text-align: right;">
         <form action="bookSearch.jsp" method="GET">

@@ -3,6 +3,7 @@
 <%@ page import="book.test.*,java.util.Date" %>
 <jsp:useBean id="booksdao" class="book.test.BooksDAO" scope="application"/>
 <jsp:useBean id="booksdto" class="book.test.BooksDTO" scope="session"/>
+<jsp:useBean id="reviewlikesdao" class="book.test.ReviewLikesDAO" scope="application"/>
 <jsp:setProperty property="*" name="booksdto"/>
 <!-- 도서 상세 보기 -->
 <!DOCTYPE html>
@@ -25,6 +26,11 @@ request.setAttribute("avgRank", avgRank);
 int favoriteCount = booksdao.favoriteCount(booksdto.getBookID());
 System.out.println(book.getTitle() + "을 찜한 사람의 수: " + favoriteCount);
 request.setAttribute("favoriteCount", favoriteCount);
+
+//베스트 리뷰 콘텐츠 가져옴
+String bestReview = reviewlikesdao.bestReview(book.getBookID());
+request.setAttribute("bestReview", bestReview);
+
 %>
 <jsp:forward page="viewBookDetail.jsp"/>
 </head>

@@ -146,9 +146,32 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
 </style>
 </head>
 <body>
-<h4 style="color: green; text-align: center;">평균 별점: <%=request.getAttribute("avgRank") %> 즐겨찾는 사람의 수: <%=request.getAttribute("favoriteCount") %></h4>
+<table border="1" style="width: 90%; background-color: #f4f4f4; padding: 10px; box-shadow: none;">
+    <tr style="background-color: #f4f4f4;">
+        <th style="text-align: center;" >
+            <p style="font-size: 20px; color: green;">평균 별점</p>
+        </th>
+        <th style="text-align: center;">
+            <p style="font-size: 20px; color: green;">찜한 사람의 수</p>
+        </th>
+        <th style="text-align: center;">
+            <p style="font-size: 20px; color: green;">베스트 리뷰</p>
+        </th>
+    </tr>
+    <tr>
+        <td style="text-align: center;">
+            <div id="star-rating" style="font-size: 24px; color: #333;"></div>
+        </td>
+        <td style="text-align: center;">
+            <p style="font-size: 24px; color: #333;"><%=request.getAttribute("favoriteCount") %></p>
+        </td>
+        <td style="text-align: center;">
+            <p style="font-size: 18px; color: #333;"><%=request.getAttribute("bestReview") %></p>
+        </td>
+    </tr>
+</table>
 
-    <table border="1" style="width: 90%; margin: 0 auto;">
+    <table border="1" style="width: 90%; margin: 20px auto; background-color: #fff; box-shadow: 0px 0px 10px #888888;">
         <thead>
             <tr>
                 <th>도서 제목</th>
@@ -288,7 +311,27 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
         // 새 창에서 Kyobo Bookstore 검색 결과 페이지 열기
         window.open(kyoboSearchURL, "_blank");
     });
-    
+    function displayStarRating(avgRank) {
+        // 별점을 5점 만점으로 가정합니다.
+        var maxStars = 5;
+
+        // 평균 별점을 기반으로 별 아이콘을 생성합니다.
+        var starRating = '';
+        for (var i = 1; i <= maxStars; i++) {
+            if (i <= avgRank) {
+                starRating += '<i class="fas fa-star star-filled" style="color: gold;""></i>';
+            } else {
+                starRating += '<i class="far fa-star star-empty"></i>';
+            }
+        }
+
+        // HTML 요소에 별 아이콘을 추가합니다.
+        document.getElementById('star-rating').innerHTML = starRating;
+    }
+
+    // 서버에서 받아온 평균 별점 값을 JavaScript로 전달하여 표시합니다.
+    var avgRank = <%=request.getAttribute("avgRank") %>;
+    displayStarRating(avgRank);
     </script>
 </body>
 </html>

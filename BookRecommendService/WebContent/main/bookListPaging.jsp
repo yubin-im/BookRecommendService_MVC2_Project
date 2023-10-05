@@ -19,18 +19,23 @@ String title = booksdao.bestRankBook();
 String bookid = booksdao.bestRankBookID();
 request.setAttribute("title", title);
 request.setAttribute("bookid", bookid);
-System.out.println("평균 별점이 가장 높은 도서: " + title);
+System.out.println("평균별점이 가장 높은 도서: " + title);
 
-// 리뷰 좋아요 수가 가장 많은 리뷰 가져오기
-String bestReview = reviewlikesdao.bestReview();
-request.setAttribute("bestReview", bestReview);
+String favorTitle = booksdao.bestFavorBook();
+String favorBookid = booksdao.bestFavorBookID();
+request.setAttribute("favorTitle", favorTitle);
+request.setAttribute("favorBookid", favorBookid);
 
-// 리뷰 좋아요 수가 가장 많은 리뷰의 도서 제목, bookid 가져오기
-String bestReviewTitle = reviewlikesdao.bestReviewTitle();
-String bestReviewBookID = reviewlikesdao.bestReviewBookID();
-request.setAttribute("bestReviewTitle", bestReviewTitle);
-request.setAttribute("bestReviewBookID", bestReviewBookID);
-System.out.println("베스트 리뷰: " + bestReview + "(도서: " + bestReviewTitle + ")");
+// // 리뷰 좋아요 수가 가장 많은 리뷰 가져오기
+// String bestReview = reviewlikesdao.bestReview();
+// request.setAttribute("bestReview", bestReview);
+
+// // 리뷰 좋아요 수가 가장 많은 리뷰의 도서 제목, bookid 가져오기
+// String bestReviewTitle = reviewlikesdao.bestReviewTitle();
+// String bestReviewBookID = reviewlikesdao.bestReviewBookID();
+// request.setAttribute("bestReviewTitle", bestReviewTitle);
+// request.setAttribute("bestReviewBookID", bestReviewBookID);
+// System.out.println("베스트 리뷰: " + bestReview + "(도서: " + bestReviewTitle + ")");
 %>
 </head>
 <body>

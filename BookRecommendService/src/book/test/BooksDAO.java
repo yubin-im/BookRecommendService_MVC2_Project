@@ -408,6 +408,40 @@ public class BooksDAO {
 		pool.releaseConnection(conn);
 		return title;
 	}
+	/**
+	 * 찜한 개수가 가장 많은 도서의 title
+	 * @return
+	 * @throws SQLException
+	 */
+	public String bestFavorBook() throws SQLException {
+		String bookid = "";
+		String title = "";
+		String sql = "SELECT bookid " +
+                "FROM (SELECT bookid " +
+                "      FROM favorites " +
+                "      GROUP BY bookid " +
+                "      ORDER BY COUNT(userid) DESC) " +
+                "WHERE ROWNUM = 1";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bookid = result.getString(1);
+		}
+		
+		sql = "select title from books where bookid = '" + bookid + "'";
+		result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			title = result.getString(1);
+		}
+		
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return title;
+	}
 	
 	/***
 	 * 평균 별점이 가장 높은 도서의 bookid 리턴
@@ -421,6 +455,32 @@ public class BooksDAO {
                 "      FROM reviews " +
                 "      GROUP BY bookid " +
                 "      ORDER BY AVG(rank) DESC, COUNT(*) DESC) " +
+                "WHERE ROWNUM = 1";
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(sql);
+		
+		if (result.next()) {
+			bookid = result.getString(1);
+		}
+		
+		result.close();
+		stmt.close();
+		pool.releaseConnection(conn);
+		return bookid;
+	}
+	/**
+	 * 찜한 개수가 가장 많은 도서의 bookid
+	 * @return
+	 * @throws SQLException
+	 */
+	public String bestFavorBookID() throws SQLException {
+		String bookid = "";
+		String sql = "SELECT bookid " +
+                "FROM (SELECT bookid " +
+                "      FROM favorites " +
+                "      GROUP BY bookid " +
+                "      ORDER BY COUNT(userid) DESC) " +
                 "WHERE ROWNUM = 1";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
@@ -467,7 +527,7 @@ public class BooksDAO {
 	 * @throws SQLException
 	 */
 	public Map<String, Integer> getYearCounts() throws SQLException {
-        String sql = "SELECT TO_CHAR(publicationdate, 'YYYY') AS publication_year, COUNT(*) AS publicationdate_count FROM books GROUP BY TO_CHAR(publicationdate, 'YYYY')";
+        String sql = "SELECT TO_CHAR(publicationdate, 'YYYY') AS publication_year, COUNT(*) AS publicationdate_count FROM books GROUP BY TO_CHAR(publicationdate, 'YYYY') ORDER BY publication_year ASC";
         Connection conn = pool.getConnection(); 
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
