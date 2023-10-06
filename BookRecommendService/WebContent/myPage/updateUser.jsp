@@ -17,7 +17,7 @@
         <div class="text-center">
             <button type="submit" class="btn btn-primary">정보 업데이트</button>
             <!-- 회원 탈퇴 버튼 -->
-            <a href="deleteUserAction.jsp" class="btn btn-danger">회원 탈퇴</a>
+            <a href="deleteUserAction.jsp" class="btn btn-danger" onclick="return confirm('정말로 회원을 삭제하시겠습니까?')">회원 탈퇴</a>
         </div>
     </form>
 </div>

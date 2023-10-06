@@ -76,16 +76,16 @@ body {
 </head>
 <body>
 <h4 class="green-text">
-    <span style="font-weight: bold;">평균별점이 가장 높은 도서 : </span>
+    <span style="font-weight: bold;">" 평균별점이 가장 높은 도서 : </span>
     <a href="bookDetail.jsp?bookID=<%=request.getAttribute("bookid")%>" target="right" style="text-decoration: none; color: #007BFF;">
         <%=request.getAttribute("title") %>
-    </a>
+    "</a>
 </h4>
 <h4 class="green-text">
-    <span style="font-weight: bold;">찜한 유저가 가장 많은 도서 : </span>
+    <span style="font-weight: bold;">" 찜한 유저가 가장 많은 도서 : </span>
     <a href="bookDetail.jsp?bookID=<%=request.getAttribute("favorBookid")%>" target="right" style="text-decoration: none; color: #007BFF;">
         <%=request.getAttribute("favorTitle") %>
-    </a>
+    "</a>
 </h4>
 <!-- <h4 class="green-text"> -->
 <!--     <span style="font-weight: bold;">베스트 리뷰:</span> -->
@@ -121,8 +121,8 @@ body {
          BooksDTO book = (BooksDTO)o;
       %>
          <tr>
-            <td><%=book.getBookID() %></td>
-            <td><a href="bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle()%></a></td>
+			<td style="text-align: center;"><%=book.getBookID() %></td>
+			<td><a href="bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle()%></a></td>
             <td><%=book.getPublisher() %></td>
             <td><%=book.getAuthors() %></td>
             <td><%=book.getGenre() %></td>

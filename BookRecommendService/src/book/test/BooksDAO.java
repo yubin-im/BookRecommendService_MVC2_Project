@@ -375,7 +375,7 @@ public class BooksDAO {
 	}
 	
 	/**
-	 * 평균 별점이 가장 높은 도서의 제목 가져오기
+	 * 평균 별점이 가장 높은 도서의 제목 가져오기, 리뷰 수가 평균 이상인 도서 중에서 가장 높은 평균 평점과 가장 많은 리뷰를 가진 도서를 선택
 	 * @return
 	 * @throws SQLException
 	 */
@@ -383,14 +383,14 @@ public class BooksDAO {
 		String bookid = "";
 		String title = "";
 		String sql = "SELECT bookid " +
-                 "FROM ( " +
-                 "    SELECT r.bookid, AVG(r.rank) AS average_rank, COUNT(*) AS review_count " +
-                 "    FROM reviews r " +
-                 "    GROUP BY r.bookid " +
-                 "    HAVING AVG(r.rank) >= (SELECT AVG(rank) FROM reviews) " +
-                 "    ORDER BY AVG(r.rank) DESC, COUNT(*) DESC " +
-                 ") " +
-                 "WHERE ROWNUM = 1";
+	             "FROM ( " +
+	             "    SELECT r.bookid, AVG(r.rank) AS average_rank, COUNT(*) AS review_count " +
+	             "    FROM reviews r " +
+	             "    GROUP BY r.bookid " +
+	             "    HAVING COUNT(*) >= (SELECT AVG(review_count) FROM (SELECT COUNT(*) AS review_count FROM reviews GROUP BY bookid)) " +
+	             "    ORDER BY average_rank DESC, review_count DESC " +
+	             ") " +
+	             "WHERE ROWNUM = 1";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
@@ -447,21 +447,21 @@ public class BooksDAO {
 	}
 	
 	/***
-	 * 평균 별점이 가장 높은 도서의 bookid 리턴
+	 * 평균 별점이 가장 높은 도서의 id 가져오기, 리뷰 수가 평균 이상인 도서 중에서 가장 높은 평균 평점과 가장 많은 리뷰를 가진 도서를 선택
 	 * @return
 	 * @throws SQLException
 	 */
 	public String bestRankBookID() throws SQLException {
 		String bookid = "";
 		String sql = "SELECT bookid " +
-                 "FROM ( " +
-                 "    SELECT r.bookid, AVG(r.rank) AS average_rank, COUNT(*) AS review_count " +
-                 "    FROM reviews r " +
-                 "    GROUP BY r.bookid " +
-                 "    HAVING AVG(r.rank) >= (SELECT AVG(rank) FROM reviews) " +
-                 "    ORDER BY AVG(r.rank) DESC, COUNT(*) DESC " +
-                 ") " +
-                 "WHERE ROWNUM = 1";
+	             "FROM ( " +
+	             "    SELECT r.bookid, AVG(r.rank) AS average_rank, COUNT(*) AS review_count " +
+	             "    FROM reviews r " +
+	             "    GROUP BY r.bookid " +
+	             "    HAVING COUNT(*) >= (SELECT AVG(review_count) FROM (SELECT COUNT(*) AS review_count FROM reviews GROUP BY bookid)) " +
+	             "    ORDER BY average_rank DESC, review_count DESC " +
+	             ") " +
+	             "WHERE ROWNUM = 1";
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);

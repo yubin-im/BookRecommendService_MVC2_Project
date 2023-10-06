@@ -72,7 +72,7 @@ String genre2 = login.getGenre2();
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary" >수정</button>
-            <button type="reset" class="btn btn-secondary">취소</button>
+            <button type="button" class="btn btn-secondary" onclick="goBack()">취소</button>
         </div>
     </form>
 </div>
@@ -82,7 +82,10 @@ String genre2 = login.getGenre2();
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-
+	function goBack() {
+	    window.history.back(); // 브라우저의 이전 페이지로 이동
+	}
+	
     document.forms['form1'].addEventListener('submit', function (event) {
     	event.preventDefault(); 
     	

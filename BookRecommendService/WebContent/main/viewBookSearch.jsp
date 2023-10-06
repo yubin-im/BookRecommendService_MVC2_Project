@@ -57,8 +57,8 @@ String searchQuery = request.getParameter("query");
          BooksDTO book = (BooksDTO)o;
       %>
          <tr>
-            <td><%=book.getBookID() %></td>
-            <td><a href="bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle()%></a></td>
+			<td style="text-align: center;"><%=book.getBookID() %></td>         
+		    <td><a href="bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle()%></a></td>
             <td><%=book.getPublisher() %></td>
             <td><%=book.getAuthors() %></td>
             <td><%=book.getGenre() %></td>

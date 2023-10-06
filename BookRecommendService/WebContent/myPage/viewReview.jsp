@@ -77,7 +77,7 @@
             <thead>
                 <tr>
                     <th>책 제목</th>
-                    <th>좋아요</th>
+                    <th >좋아요</th>
                     <th>평점</th>
                     <th>리뷰내용</th>
                     <th>리뷰 삭제</th> <!-- 리뷰 삭제 버튼 추가 -->
@@ -91,7 +91,7 @@
                 %>
                     <tr>
                         <td style="max-width:600px; word-wrap: break-word;"><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=review.getBookID()%>" target="right"><%=bookTitle %></a></td>
-                        <td><%= review.getLikes() %></td>
+                        <td style="text-align: center;"><%= review.getLikes() %></td>
                         <td>
                         <div class="star-rating">
         					<% int rank = review.getRank(); %>
@@ -108,14 +108,14 @@
                         <td>
                             <form action="deleteReviewAction.jsp" method="post" onsubmit="return confirm('정말로 이 리뷰를 삭제하시겠습니까?');">
                                 <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
-                                <button type="submit" class="delete-button">리뷰 삭제</button>
+                                <button type="submit" class="delete-button" style="display: block; margin: 0 auto;">삭제</button>
                             </form>
                         </td>
                           <td>
                             <form action="updateReviewForm.jsp" method="post">
                             <input type="hidden" name="bookID" value="<%= review.getBookID() %>">
                             <input type="hidden" name="reviewContent" value="<%= review.getReviewContent() %>">
-                                <button type="submit" class="update-button">리뷰 수정</button>
+                                <button type="submit" class="update-button" style="display: block; margin: 0 auto;">수정</button>
                             </form>
                         </td>
                     </tr>

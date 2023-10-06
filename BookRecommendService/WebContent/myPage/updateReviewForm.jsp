@@ -70,6 +70,9 @@ function validateForm() {
 
     return true;
 }
+function goBack() {
+    window.history.back(); // 브라우저의 이전 페이지로 이동
+}
 </script>
 </head>
 <body>
@@ -94,7 +97,7 @@ function validateForm() {
             </div>
             <div class="text-center">
                 <input type="submit" class="btn btn-primary submit-button" value="리뷰 수정">
-                <input type="reset" class="btn btn-secondary reset-button" value="취소">
+                <input type="reset" class="btn btn-secondary reset-button" onclick="goBack()" value="취소">
             </div>
         </form>
     </div>

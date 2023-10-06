@@ -52,6 +52,9 @@
     }
 </style>
 <script>
+function goBack() {
+    window.history.back(); // 브라우저의 이전 페이지로 이동
+}
 function validateForm() {
     var rank = document.forms["reviewForm"]["rank"].value;
     var reviewContent = document.forms["reviewForm"]["reviewContent"].value;
@@ -73,7 +76,7 @@ function validateForm() {
 <body>
     <div class="container">
         <form name="reviewForm" action="reviewAction.jsp" onsubmit="return validateForm()">
-            <h3>리뷰 수정</h3>
+            <h3>리뷰 작성</h3>
             <div class="form-group">
                 <label for="rank">별점</label>
                 <select class="form-control" name="rank">
@@ -89,8 +92,8 @@ function validateForm() {
                 <textarea class="form-control" name="reviewContent" rows="5" maxlength="150" ></textarea>
             </div>
             <div class="text-center">
-                <input type="submit" class="btn btn-primary submit-button" value="리뷰 수정">
-                <input type="reset" class="btn btn-secondary reset-button" value="취소">
+                <input type="submit" class="btn btn-primary submit-button" value="리뷰 작성">
+                <input type="reset" class="btn btn-secondary reset-button" onclick="goBack()" value="취소">
             </div>
             </div>
         </form>
