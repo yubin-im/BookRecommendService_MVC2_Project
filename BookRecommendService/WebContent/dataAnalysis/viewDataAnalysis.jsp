@@ -42,7 +42,7 @@
         <h2>실시간 트렌드</h2>
         <hr> <!-- 구분선 추가 -->
 
-        <a href="reviewWordcloud.jsp" class="btn btn-primary">실시간 리뷰 트렌드</a>
+        <a href="reviewWordcloud.jsp" class="btn btn-primary">리뷰 트렌드</a>
         <a href="genreBarChart.jsp" class="btn btn-primary">장르별 도서 수</a>
         <a href="yearBarChart.jsp" class="btn btn-primary">연도별 도서 수</a>    
     </div>

@@ -5,12 +5,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>viewReviewWordcloud</title>
+<title>Book Word Cloud</title>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+<style>
+    /* 스타일 추가: 워드 클라우드를 책 모양에 표시하기 위한 스타일 */
+    #wordcloud-container {
+        position: relative;
+        width: 800px;
+        height: 600px;
+    }
+    #book-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+    }
+</style>
 </head>
 <body>
-    <div id="wordcloud"></div>
+    <!-- 책 모양 이미지를 배경으로 사용합니다. -->
+    <div id="wordcloud-container">
+        <img id="book-image" src="book.png" alt="Book Image" />
+    </div>
 
 <script>
 // 워드 클라우드 데이터를 JavaScript 배열로 파싱합니다.
@@ -43,7 +60,7 @@ function randomColor() {
 window.onload = function() {
     // 워드 클라우드 생성 설정
     var wordcloud = d3.layout.cloud()
-        .size([800, 400]) // 워드 클라우드 크기 설정
+        .size([800, 600]) // 워드 클라우드 크기 설정
         .words(wordcloudData)
         .rotate(0) // 워드 회전 각도 설정
         .fontSize(function(d) { return d.size; }) // 워드 크기 설정
@@ -54,21 +71,18 @@ window.onload = function() {
 
     // 워드 클라우드를 그리는 함수
     function drawWordCloud(words) {
-        d3.select("#wordcloud")
+        d3.select("#wordcloud-container")
             .append("svg")
-            .attr("width", wordcloud.size()[0])
-            .attr("height", wordcloud.size()[1])
-            .append("g")
-            .attr("transform", "translate(" + (wordcloud.size()[0] / 2) + "," + (wordcloud.size()[1] / 2) + ")")
+            .attr("width", 800)
+            .attr("height", 600)
             .selectAll("text")
             .data(words)
             .enter().append("text")
             .style("font-size", function(d) { return d.size + "px"; })
             .style("fill", function(d) { return d.color; }) // 워드 색상 설정
             .attr("text-anchor", "middle")
-            .attr("transform", function(d) {
-                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-            })
+            .attr("x", function(d) { return d.x; }) // x 좌표 설정
+            .attr("y", function(d) { return d.y; }) // y 좌표 설정
             .text(function(d) { return d.text; });
     }
 };

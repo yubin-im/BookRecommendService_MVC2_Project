@@ -481,9 +481,9 @@ throws SQLException {
 
 System.out.println("About to connect to " + url);
  try {
-	 System.out.println("connection is not connected...");
+//	 System.out.println("connection is not connected...");
 	  con = DriverManager.getConnection(url, user, password);
-		 System.out.println(con + "is connected...");
+		 System.out.println(con + " is connected...");
 
  }
  catch (Exception e) {
