@@ -4,13 +4,13 @@ import java.util.List;
 
 public class UsersDTO {
 	private String userID;
-	private String password;
+	private int password;
 	private String name;
 	private String genre1;
 	private String genre2;
 	private String email;
 	
-	public UsersDTO(String userID, String password, String name, String genre1, String genre2, String email) {
+	public UsersDTO(String userID, int password, String name, String genre1, String genre2, String email) {
 		super();
 		this.userID = userID;
 		this.password = password;
@@ -20,7 +20,7 @@ public class UsersDTO {
 		this.email = email;
 	}
 	
-	public UsersDTO(String userID, String password) {
+	public UsersDTO(String userID, int password) {
 		super();
 		this.userID = userID;
 		this.password = password;
@@ -30,11 +30,10 @@ public class UsersDTO {
 	}
 
 	public String getUserID() {
-		System.out.println("DTO의 getUserID임 " + this.userID);
 		return userID;
 	}
 
-	public String getPassword() {
+	public int getPassword() {
 		return password;
 	}
 
@@ -53,7 +52,7 @@ public class UsersDTO {
 		this.userID = userID;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(int password) {
 		this.password = password;
 	}
 

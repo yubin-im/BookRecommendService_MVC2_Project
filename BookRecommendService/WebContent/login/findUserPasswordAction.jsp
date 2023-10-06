@@ -16,7 +16,7 @@
 <%
 	String massage = null;
 	String userID = request.getParameter("userID");
-	String email = request.getParameter("email");
+	String email = userDAO.getEmail(userID);
 	boolean idChekc = userDAO.checkID(userID);
 	boolean emailCheck = userDAO.checkEmail(email);
 	if(idChekc){
@@ -29,12 +29,10 @@
 			
 			String content = "<html><body style='font-family: Arial, sans-serif;'>";
 			content += "<div style='background-color: #f4f4f4; padding: 40px; text-align: center;'>";
-			content += "<h1 style='color: #155724; font-size: 24px;'>비밀번호 찾기 결과</h1>";
-			content += "<p style='font-size: 16px;'>회원님의 비밀번호는 다음과 같습니다:</p>";
-			content += "<p style='font-size: 20px; font-weight: bold;'>" + userDAO.getPassword(userID) + "</p>";
-			content += "<p>로그인 화면으로 돌아가려면 아래 링크를 클릭하세요:</p>";
+			content += "<h1 style='color: #155724; font-size: 24px;'>이메일 인증에 성공하였습니다.</h1>";
+			content += "<p style='font-size: 16px;'>비밀번호를 변경하려면 아래 링크를 누르세요</p>";
 			content += "<br>"; // 줄 바꿈 추가
-			content += "<p><a href='http://localhost:8090/BookRecommendService/login/loginForm.html' style='background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 16px;'>로그인 화면으로 돌아가기</a></p>";
+			content += "<p><a href='http://localhost:8090/BookRecommendService/login/updatePasswordForm.jsp?userID=" + userID + "' style='background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 16px;'>비밀번호 변경하기</a></p>";
 			content += "</div>";
 			content += "</body></html>";
 						

@@ -58,16 +58,12 @@
 </style>
 </head>
 <body>
-<h1>회원님의 아이디와 이메일 주소를 입력해주세요</h1>
+<h1>회원님의 아이디를 입력하세요</h1>
 <form action="findUserPasswordAction.jsp">
     <table>
         <tr>
             <td>아이디 : </td>
             <td><input type="text" name="userID"></td>
-        </tr>
-        <tr>
-            <td>이메일 : </td>
-            <td><input type="email" name="email"></td>
         </tr>
     </table>
     <input type="submit" value="전송">

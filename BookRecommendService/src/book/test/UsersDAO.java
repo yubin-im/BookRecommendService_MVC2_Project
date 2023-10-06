@@ -44,10 +44,10 @@ public class UsersDAO {
 		UsersDTO users = null;
 		
 		while (result.next()) {
-			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
+			users  = new UsersDTO(result.getString("userID"), result.getInt("password"), result.getString("name"), 
 					result.getString("genre1"), result.getString("genre2"), result.getString("email"));
 		}
-		
+		System.out.println("userdao의 select password 해쉬 코드 값 확인 : " + users.getPassword());
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
@@ -69,7 +69,7 @@ public class UsersDAO {
 		UsersDTO users = null;
 		
 		while (result.next()) {
-			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
+			users  = new UsersDTO(result.getString("userID"), result.getInt("password"), result.getString("name"), 
 					result.getString("genre1"), result.getString("genre2"), result.getString("email"));
 		}
 		
@@ -97,13 +97,15 @@ public class UsersDAO {
 		String sql = "insert into Users(userID, password, name, genre1, genre2, email)\r\n" + 
 				"	values( "
 				+ "'"+input.getUserID()+"',"
-				+ "'"+input.getPassword()+"', "
+				+ ""+input.getPassword()+", "
 				+ "'"+input.getName()+"',"
 				+ "'"+input.getGenre1()+"',"
 				+ "'"+input.getGenre2() +"',"
 				+ "'"+input.getEmail() + "')";
-		int result = stmt.executeUpdate(sql);
+		System.out.println("userdao insert sql : " + sql);
 		
+		int result = stmt.executeUpdate(sql);
+		System.out.println("userdao insert result 확인 : " + result);
 		stmt.close();
 		pool.releaseConnection(conn);
 		return result;
@@ -147,6 +149,32 @@ public class UsersDAO {
 		 stmt.close();
 		 pool.releaseConnection(conn);
 		 return result;
+	}
+	
+	/**
+	 * 회원 비밀번호 변경
+	 * @param input
+	 * @return
+	 * @throws SQLException
+	 */
+	public String updatePassword(String id, int pwd) throws SQLException {
+		Connection conn = pool.getConnection();
+		Statement stmt = conn.createStatement();
+		 String sql = "UPDATE users SET " +
+                 "password = '" + pwd + "' " +
+                 "WHERE userid = '" + id + "'";
+		 System.out.println("userDAO updatePassword 쿼리문 : " + sql);
+		 int result = stmt.executeUpdate(sql);
+		 String msg = null;
+		 if(result == 0) {
+			 msg = "비밀번호 변경에 실패했습니다.";
+		 }
+		 else {
+			 msg = "비밀번호 변경에 성공했습니다.";
+		 }
+		 stmt.close();
+		 pool.releaseConnection(conn);
+		 return msg;
 	}
 	/**
 	 * 회원정보 찾기에 사용되는 이메일 체크 함수
@@ -194,26 +222,26 @@ public class UsersDAO {
 		return bool;
 	}
 	/**
-	 * 비밀번호 찾기에 활용
+	 * 이메일을 받아 옴 비밀번호 찾기에 활용
 	 * @param input
 	 * @return
 	 * @throws SQLException
 	 */
-	public String getPassword(String input) throws SQLException {
+	public String getEmail(String input) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		String sql = "select * from Users where userID = '" + input + "'";
 		ResultSet result = stmt.executeQuery(sql);
 		UsersDTO users = null;
 		while (result.next()) {
-			users  = new UsersDTO(result.getString("userID"), result.getString("password"), result.getString("name"), 
+			users  = new UsersDTO(result.getString("userID"), result.getInt("password"), result.getString("name"), 
 					result.getString("genre1"), result.getString("genre2"), result.getString("email"));
 		}
-		String password = users.getPassword();
+		String email = users.getEmail();
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
-		return password;
+		return email;
 	}
 	/**
 	 * 아이디 찾기에 활용

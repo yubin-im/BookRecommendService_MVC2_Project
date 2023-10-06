@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -260,73 +261,73 @@ public class BooksDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ArrayList<BooksDTO> selectRecommBookPaging(HttpServletRequest request, String genre1, String genre2)
-			throws SQLException {
-		int pg = 1;
-		String strPg = request.getParameter("pg");
-		if (strPg != null) {
-			pg = Integer.parseInt(strPg);
-		}
+	 public ArrayList<BooksDTO> selectRecommBookPaging(HttpServletRequest request, String genre1, String genre2)
+	         throws SQLException {
+	      int pg = 1;
+	      String strPg = request.getParameter("pg");
+	      if (strPg != null) {
+	         pg = Integer.parseInt(strPg);
+	      }
 
-		int rowSize = 20;
-		int start = (pg * rowSize) - (rowSize - 1);
-		int end = pg * rowSize;
-		int total = 0; // 총 추천 게시물수
+	      int rowSize = 20;
+	      int start = (pg * rowSize) - (rowSize - 1);
+	      int end = pg * rowSize;
+	      int total = 0; // 총 추천 게시물수
 
-		String sql = "select count(*) from books where genre in ('" + genre1 + "', '" + genre2 + "')";
-		Connection conn = pool.getConnection();
-		Statement stmt = conn.createStatement();
-		ResultSet result = stmt.executeQuery(sql);
+	      String sql = "select count(*) from books where genre in ('" + genre1 + "', '" + genre2 + "')";
+	      Connection conn = pool.getConnection();
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
 
-		if (result.next()) {
-			total = result.getInt(1);
-		}
+	      if (result.next()) {
+	         total = result.getInt(1);
+	      }
 
-		System.out.println("시작 : " + start + " 끝:" + end);
-		System.out.println("글의 수 : " + total);
+	      System.out.println("시작 : " + start + " 끝:" + end);
+	      System.out.println("글의 수 : " + total);
 
-		int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
-		// int totalPage = total/rowSize + (total%rowSize==0?0:1);
-		System.out.println("페이지수 : " + allPage);
+	      int allPage = (int) Math.ceil(total / (double) rowSize); // 페이지수
+	      // int totalPage = total/rowSize + (total%rowSize==0?0:1);
+	      System.out.println("페이지수 : " + allPage);
 
-		int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
-		int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
-		// ((1-1)/10*10)
-		int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
-		if (toPage > allPage) { // 예) 20>17
-			toPage = allPage;
-		}
+	      int block = 10; // 한페이지에 보여줄 범위 << [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >>
+	      int fromPage = ((pg - 1) / block * block) + 1; // 보여줄 페이지의 시작
+	      // ((1-1)/10*10)
+	      int toPage = ((pg - 1) / block * block) + block; // 보여줄 페이지의 끝
+	      if (toPage > allPage) { // 예) 20>17
+	         toPage = allPage;
+	      }
 
-		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
+	      HashMap map = new HashMap();
+	      map.put("start", start);
+	      map.put("end", end);
 
-		BooksDTO book = null;
-		ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
+	      BooksDTO book = null;
+	      ArrayList<BooksDTO> books = new ArrayList<BooksDTO>();
 
-		sql = "select * from " + "(select A.*, ROWNUM r from " + "(select * from books where genre IN ('" + genre1
-				+ "', '" + genre2 + "') order by TO_NUMBER(bookid)) A) " + "where r >= " + start + " and r <= " + end;
-		result = stmt.executeQuery(sql);
+	      sql = "select * from " + "(select A.*, ROWNUM r from " + "(select * from books where genre IN ('" + genre1
+	            + "', '" + genre2 + "') order by title) A) " + "where r >= " + start + " and r <= " + end;
+	      result = stmt.executeQuery(sql);
 
-		while (result.next()) {
-			book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
-					result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
-					result.getInt("PRICE"), result.getInt("VIEWS"));
-			books.add(book);
-		}
+	      while (result.next()) {
+	         book = new BooksDTO(result.getString("BOOKID"), result.getString("TITLE"), result.getString("PUBLISHER"),
+	               result.getString("AUTHORS"), result.getString("GENRE"), result.getDate("PUBLICATIONDATE"),
+	               result.getInt("PRICE"), result.getInt("VIEWS"));
+	         books.add(book);
+	      }
 
-		request.setAttribute("books", books);
-		request.setAttribute("pg", pg);
-		request.setAttribute("allPage", allPage);
-		request.setAttribute("block", block);
-		request.setAttribute("fromPage", fromPage);
-		request.setAttribute("toPage", toPage);
+	      request.setAttribute("books", books);
+	      request.setAttribute("pg", pg);
+	      request.setAttribute("allPage", allPage);
+	      request.setAttribute("block", block);
+	      request.setAttribute("fromPage", fromPage);
+	      request.setAttribute("toPage", toPage);
 
-		result.close();
-		stmt.close();
-		pool.releaseConnection(conn);
-		return books;
-	}
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+	      return books;
+	   }
 	
 	/**
 	 * 해당 책의 평균 별점 계산 메서드
@@ -534,22 +535,165 @@ public class BooksDAO {
 	 */
 	public Map<String, Integer> getYearCounts() throws SQLException {
         String sql = "SELECT TO_CHAR(publicationdate, 'YYYY') AS publication_year, COUNT(*) AS publicationdate_count FROM books GROUP BY TO_CHAR(publicationdate, 'YYYY') ORDER BY publication_year ASC";
-        Connection conn = pool.getConnection(); 
+        Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);
-        
-        Map<String, Integer> getYearCounts = new HashMap<>();
-        
+		
+        Map<String, Integer> getYearCounts = new TreeMap();
         while (result.next()) {
             String publicationDate = result.getString("publication_year");
             int count = result.getInt("publicationdate_count");
             getYearCounts.put(publicationDate, count);
         }
-        
         result.close();
 		stmt.close();
 		pool.releaseConnection(conn);
         return getYearCounts;
     }
 	
+	   /***
+	    * 평균 별점이 가장 높은 도서  출판사 리턴
+	    * @return
+	    * @throws SQLException
+	    */
+	   public String bestRankBookPub() throws SQLException {
+	      String bookid = "";
+	      String publisher = "";
+	      String sql = "SELECT bookid " +
+	                "FROM ( " +
+	                "    SELECT r.bookid, AVG(r.rank) AS average_rank, COUNT(*) AS review_count " +
+	                "    FROM reviews r " +
+	                "    GROUP BY r.bookid " +
+	                "    HAVING COUNT(*) >= (SELECT AVG(review_count) FROM (SELECT COUNT(*) AS review_count FROM reviews GROUP BY bookid)) " +
+	                "    ORDER BY average_rank DESC, review_count DESC " +
+	                ") " +
+	                "WHERE ROWNUM = 1";
+	      Connection conn = pool.getConnection();
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         bookid = result.getString(1);
+	      }
+	      
+	      sql = "select publisher from books where bookid = '" + bookid + "'";
+	      result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         publisher = result.getString(1);
+	      }
+	      
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+	      return publisher;
+	   }
+	   
+	   /***
+	    * 평균 별점이 가장 높은 도서  저자 리턴
+	    * @return
+	    * @throws SQLException
+	    */
+	   public String bestRankBookAut() throws SQLException {
+	      String bookid = "";
+	      String authors = "";
+	      String sql = "SELECT bookid " +
+	                "FROM ( " +
+	                "    SELECT r.bookid, AVG(r.rank) AS average_rank, COUNT(*) AS review_count " +
+	                "    FROM reviews r " +
+	                "    GROUP BY r.bookid " +
+	                "    HAVING COUNT(*) >= (SELECT AVG(review_count) FROM (SELECT COUNT(*) AS review_count FROM reviews GROUP BY bookid)) " +
+	                "    ORDER BY average_rank DESC, review_count DESC " +
+	                ") " +
+	                "WHERE ROWNUM = 1";
+	      Connection conn = pool.getConnection();
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         bookid = result.getString(1);
+	      }
+	      
+	      sql = "select authors from books where bookid = '" + bookid + "'";
+	      result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         authors = result.getString(1);
+	      }
+	      
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+	      return authors;
+	   }
+	   
+	   /***
+	    * 찜한 유저가 가장 많은 도서의 출판사 리턴
+	    * @return
+	    * @throws SQLException
+	    */
+	   public String bestFavorBookPub() throws SQLException {
+	      String bookid = "";
+	      String publisher = "";
+	      String sql = "SELECT bookid " +
+	                "FROM (SELECT bookid " +
+	                "      FROM favorites " +
+	                "      GROUP BY bookid " +
+	                "      ORDER BY COUNT(userid) DESC) " +
+	                "WHERE ROWNUM = 1";
+	      Connection conn = pool.getConnection();
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         bookid = result.getString(1);
+	      }
+	      
+	      sql = "select publisher from books where bookid = '" + bookid + "'";
+	      result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         publisher = result.getString(1);
+	      }
+	      
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+	      return publisher;
+	   }
+	   
+	   /***
+	    * 찜한 유저가 가장 많은 도서의 저자 리턴
+	    * @return
+	    * @throws SQLException
+	    */
+	   public String bestFavorBookAut() throws SQLException {
+	      String bookid = "";
+	      String authors = "";
+	      String sql = "SELECT bookid " +
+	                "FROM (SELECT bookid " +
+	                "      FROM favorites " +
+	                "      GROUP BY bookid " +
+	                "      ORDER BY COUNT(userid) DESC) " +
+	                "WHERE ROWNUM = 1";
+	      Connection conn = pool.getConnection();
+	      Statement stmt = conn.createStatement();
+	      ResultSet result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         bookid = result.getString(1);
+	      }
+	      
+	      sql = "select authors from books where bookid = '" + bookid + "'";
+	      result = stmt.executeQuery(sql);
+	      
+	      if (result.next()) {
+	         authors = result.getString(1);
+	      }
+	      
+	      result.close();
+	      stmt.close();
+	      pool.releaseConnection(conn);
+	      return authors;
+	   }
 }

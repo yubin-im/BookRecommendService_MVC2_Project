@@ -59,7 +59,6 @@
     <table class="main-table" border="1">
         <thead>
             <tr>
-                <th>번호</th>
                 <th>도서 제목</th>
                 <th>출판사</th>
                 <th>저자</th>
@@ -72,8 +71,7 @@
             BooksDTO book = (BooksDTO)o;
         %>
             <tr>
-				<td style="text-align: center;"><%=book.getBookID() %></td> 
-				<td><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle() %></a></td>
+            <td><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle() %></a></td>
                 <td><%=book.getPublisher() %></td>
                 <td><%=book.getAuthors() %></td>
                 <td><%=book.getGenre() %></td>

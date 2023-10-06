@@ -102,8 +102,9 @@ public class FavoriteDAO {
 	private void delete(FavoriteDTO input) throws SQLException {
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
-		String sql = "delete from favorites where bookid='" + input.getBookID() + "' and userID = '" + input.getUserID() + "'";		
+		String sql = "delete from favorites where bookid='" + input.getBookID() + "' and userID = '" + input.getUserID() + "'";
 		int result = stmt.executeUpdate(sql);
+		System.out.println(sql);
 		
 		stmt.close();
 		pool.releaseConnection(conn);
@@ -155,5 +156,4 @@ public class FavoriteDAO {
 		pool.releaseConnection(conn);
 		return favorites;
 	}
-	
 }
