@@ -3,7 +3,6 @@
 <jsp:useBean id="login" type="book.test.UsersDTO" scope="session"/>
 <%
 String userName = login.getName();
-String password = login.getPassword();
 String genre1 = login.getGenre1();
 String genre2 = login.getGenre2();
 %>
@@ -21,10 +20,6 @@ String genre2 = login.getGenre2();
         <div class="form-group">
             <label for="userID">아이디</label>
             <input type="text" class="form-control" name="userID" value = "<%=login.getUserID()%>" readonly>
-        </div>
-        <div class="form-group">
-            <label for="password">비밀번호</label>
-            <input type="password" class="form-control" name="password" value = "<%=login.getPassword()%>" readonly>
         </div>
         <div class="form-group">
     		<label for="name">이름</label>

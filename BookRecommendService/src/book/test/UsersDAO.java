@@ -42,12 +42,13 @@ public class UsersDAO {
 		ResultSet result = stmt.executeQuery(sql);
 		
 		UsersDTO users = null;
+		users = null;
 		
 		while (result.next()) {
 			users  = new UsersDTO(result.getString("userID"), result.getInt("password"), result.getString("name"), 
 					result.getString("genre1"), result.getString("genre2"), result.getString("email"));
 		}
-		System.out.println("userdao의 select password 해쉬 코드 값 확인 : " + users.getPassword());
+		System.out.println("userDAO의 select = " + users);
 		result.close();
 		stmt.close();
 		pool.releaseConnection(conn);

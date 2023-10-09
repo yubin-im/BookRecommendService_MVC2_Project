@@ -20,8 +20,7 @@
 	boolean idChekc = userDAO.checkID(userID);
 	boolean emailCheck = userDAO.checkEmail(email);
 	if(idChekc){
-		if(emailCheck){
-			massage = "해당 이메일로 패스워드가 전송되었습니다.";
+			massage = "회원가입시 인증했던 이메일로 들어가 인증을 진행해주세요";
 			String host = "http://localhost:8090/BookRecommendService/login/";
 			String from = "rakyunkim@gmail.com";
 			String to = email;
@@ -32,7 +31,10 @@
 			content += "<h1 style='color: #155724; font-size: 24px;'>이메일 인증에 성공하였습니다.</h1>";
 			content += "<p style='font-size: 16px;'>비밀번호를 변경하려면 아래 링크를 누르세요</p>";
 			content += "<br>"; // 줄 바꿈 추가
-			content += "<p><a href='http://localhost:8090/BookRecommendService/login/updatePasswordForm.jsp?userID=" + userID + "' style='background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 16px;'>비밀번호 변경하기</a></p>";
+			content += "<form action='http://localhost:8090/BookRecommendService/login/updatePasswordForm.jsp' method='post'>";
+			content += "<input type='hidden' name='userID' value='" + userID + "'>";
+			content += "<p><button type='submit' style='background-color: #007bff; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; border: none; cursor: pointer;'>비밀번호 변경하기</button></p>";
+			content += "</form>";
 			content += "</div>";
 			content += "</body></html>";
 						
@@ -59,10 +61,6 @@
 			msg.setContent(content, "text/html;charset=UTF8");
 			Transport.send(msg);
 		}
-		else{
-			massage = "존재하지 않는 이메일입니다. 확인 후 다시 시도해주세요";
-		}
-	}
 	else{
 		massage = "없는 아이디 입니다. 확인 후 다시 시도해주세요";
 	}

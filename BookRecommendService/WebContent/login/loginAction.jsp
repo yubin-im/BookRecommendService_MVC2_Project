@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" errorPage="loginError.jsp"%>
 <jsp:useBean id="dao" class="book.test.UsersDAO" scope="application"/>
 <jsp:useBean id="dto" class="book.test.UsersDTO" scope="session"/>
 <jsp:setProperty property="userID" name="dto"/>
