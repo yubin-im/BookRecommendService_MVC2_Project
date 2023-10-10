@@ -19,6 +19,8 @@
   - **Framework**: MVC2
   - **Database**: Oracle DB(11)
 
+### 아키텍처
+
 ### 프로젝트 구조
 (자바 폴더 캡쳐)
 
