@@ -49,7 +49,9 @@ body {
 
 .green-text {
     color: green;
-    text-align: center;
+    display: inline-block; /* 요소를 인라인 블록으로 설정하여 텍스트를 가운데 정렬합니다. */
+    text-align: left; /* 텍스트 내용을 왼쪽으로 정렬합니다. */
+    margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 가운데 정렬합니다. */
 }
 
 .main-table th {

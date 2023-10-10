@@ -50,7 +50,6 @@
     <table>
         <thead>
             <tr>
-                <th>번호</th>
                 <th>도서 제목</th>
                 <th>출판사</th>
                 <th>저자</th>
@@ -62,8 +61,7 @@
         for(Object o: favorbooks) {
             BooksDTO book = (BooksDTO)o;
         %>
-            <tr>
-				<td style="text-align: center;"><%=book.getBookID() %></td>          
+            <tr>     
 			    <td><a href="<%=request.getContextPath() %>/main/bookDetail.jsp?bookID=<%=book.getBookID()%>" target="right"><%=book.getTitle() %></a></td>
                 <td><%=book.getPublisher() %></td>
                 <td><%=book.getAuthors() %></td>

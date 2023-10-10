@@ -91,27 +91,22 @@ public class ReviewDTO {
 	}
 
 	public void setReviewContent(String reviewContent) {
-		System.out.println("review content " + reviewContent);
 		this.reviewContent = reviewContent;
 	}
 
 	public void setReviewDate(Date reviewDate) {
-		System.out.println("review content " + reviewDate);
 		this.reviewDate = reviewDate;
 	}
 
 	public void setRank(int rank) {
-		System.out.println("review content " + rank);
 		this.rank = rank;
 	}
 
 	public void setUserID(String userID) {
-		System.out.println("review content " + userID);
 		this.userID = userID;
 	}
 
 	public void setBookID(String bookID) {
-		System.out.println("review content " + bookID);
 		this.bookID = bookID;
 	}
 

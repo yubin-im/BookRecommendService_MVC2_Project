@@ -72,7 +72,6 @@ public class ReviewLikesDAO {
 		
 		while(result.next()) {
 			if(input.getLikeUserID().equals(result.getString("likeUserID"))) {
-				System.out.println("if문");
 				bool = false;
 			}
 		}
@@ -133,7 +132,8 @@ public class ReviewLikesDAO {
 	 */
 	public String bestReview(String input) throws SQLException {
 		String bestReview = "";
-		String sql = "SELECT reviewcontent FROM reviews WHERE likes = (SELECT MAX(likes) FROM reviews WHERE bookid = '" + input + "') AND bookid = '" + input + "'";		System.out.println(sql);
+		String sql = "SELECT reviewcontent FROM reviews WHERE likes = (SELECT MAX(likes) FROM reviews WHERE bookid = '" + input + "') AND bookid = '" + input + "'";		
+		
 		Connection conn = pool.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(sql);

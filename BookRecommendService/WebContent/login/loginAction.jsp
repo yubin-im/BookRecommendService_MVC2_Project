@@ -18,8 +18,7 @@
 	String pwd = request.getParameter("password");
 	int password = pwd.hashCode();
 	dto.setPassword(password);
-	
-	System.out.println(dto);
+
 	dto = dao.select(dto);
 	session.setAttribute("login", dto);
 %>

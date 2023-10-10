@@ -149,7 +149,7 @@ boolean isReviewCheck = reviewDAO.check(reviewDTO);
 <div style="width: 70%; /* 가로 넓이를 조절합니다 */ margin: 0 auto; /* 가운데 정렬을 위한 margin 설정 */ background-color: #f4f4f4; padding: 10px; box-shadow: none;">
     <div style="background-color: #f4f4f4; display: flex; justify-content: space-around;">
         <div style="text-align: center;">
-            <p style="font-size: 15px; color: green; font-weight: bold;">평균 별점</p> <!-- 폰트 크기를 조절합니다 -->
+             <p style="font-size: 15px; color: green; font-weight: bold;">평균 별점 (<%=request.getAttribute("avgRank") %>)</p>
             <div id="star-rating" style="font-size: 18px; color: #333;"></div> <!-- 폰트 크기를 조절합니다 -->
         </div>
         <div style="text-align: center;">
