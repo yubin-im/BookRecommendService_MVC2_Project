@@ -16,10 +16,8 @@
   - **Language**: Java
   - **JDK**: 1.8.0
   - **IDE**: Eclipse
-  - **Framework**: MVC2
+  - **Model**: MVC2
   - **Database**: Oracle DB(11)
-
-### 아키텍처
 
 ### 프로젝트 구조
 (자바 폴더 캡쳐)
