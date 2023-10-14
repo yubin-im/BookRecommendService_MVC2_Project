@@ -20,7 +20,11 @@
   - **Database**: Oracle DB(11)
 
 ### 프로젝트 구조
-(자바 폴더 캡쳐)
+  - src/book.test
+  - WebContent/dataAnalysis
+  - WebContent/login
+  - WebContent/main
+  - WebContent/mypage
 
 ### ERD
 
