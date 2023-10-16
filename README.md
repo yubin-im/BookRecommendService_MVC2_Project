@@ -27,7 +27,7 @@
   - WebContent/mypage
 
 ### ERD
-
+![BooksProjectTable](https://github.com/yubin-im/BookRecommendService_MVC2_Project/assets/140530127/e1809ea8-0f9f-495a-a7e4-0daf9e1ae588)
 
 ## 주요 기능
 #### [회원가입](https://rakyun.notion.site/22ebd6cb2fb643469f76b738f6f3a0e2)
