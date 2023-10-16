@@ -13,7 +13,7 @@
   - 김락윤: 로그인, 회원가입, 아이디 비밀번호 찾기, 회원정보 변경, 리뷰 찜 기능
 
 ### 개발 환경
-  - **Language**: Java
+  - **Language**: Java 8
   - **JDK**: 1.8.0
   - **IDE**: Eclipse
   - **Model**: MVC2
