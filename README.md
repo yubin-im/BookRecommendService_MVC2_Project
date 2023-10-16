@@ -57,6 +57,6 @@
   - 찜 목록
 
 #### [회원정보 찾기](https://rakyun.notion.site/cfe9fea4542e4d80a02fb3dae5a0d4cf)
-  - 아이디, 비밀번호 찾
+  - 아이디, 비밀번호 찾기 
 
 #### [로그아웃](https://rakyun.notion.site/e9bbee0f9e864f4fb6dde7dfa305172d)
