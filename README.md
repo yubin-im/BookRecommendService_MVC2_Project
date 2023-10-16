@@ -52,10 +52,10 @@
   - 장르 별 도서 수 그래프
   - 출간 연도 별 그래프
 
-#### [회원정보 찾기](https://www.notion.so/rakyun/0428b7baba204eb9a9ab1c9a7ff3ea89?pvs=4)
-
 #### [마이페이지](https://www.notion.so/rakyun/185f6ca41e284876ae8555bd35082656?pvs=4)
   - 내가 작성한 리뷰 목록
   - 찜 목록
+
+#### [회원정보 찾기](https://www.notion.so/rakyun/0428b7baba204eb9a9ab1c9a7ff3ea89?pvs=4)
 
 #### [로그아웃](https://www.notion.so/rakyun/3e416ea265a542a891bf631877542862?pvs=4)
