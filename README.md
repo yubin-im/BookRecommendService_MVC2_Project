@@ -30,28 +30,32 @@
 
 
 ## 주요 기능
-#### [로그인](https://www.notion.so/rakyun/2a02ba0d4a6f40f0a4ba143371b7b656?pvs=4)
-
-#### 회원가입
+#### [회원가입](https://www.notion.so/rakyun/6c0420326a41420ba17aea46b1d658dd?pvs=4)
   - 가입 시 관심있는 장르 두가지 선택
 
-#### 메인
+#### [로그인](https://rakyun.notion.site/e5afb25f582943c596446f25181e533b)
+
+#### [메인](https://www.notion.so/rakyun/cee982f0744249adbc98677ce5d7e725?pvs=4)
   - 전체 도서 목록 출력
   - 도서 통합 검색
 
-#### 도서 상세
+#### [도서 상세](https://www.notion.so/rakyun/a0677d7d30fc4ea6931096aa7c98824b?pvs=4)
   - 도서 상세 출력
   - 도서 별점과 리뷰 작성
   - 도서 즐겨찾기
 
-#### 추천도서
+#### [추천도서](https://www.notion.so/rakyun/05644f9bcdd843d4a9dd3912599fb310?pvs=4)
   - 가입 시 선택한 두 가지 장르의 도서 출력
 
-#### 마이페이지
-  - 내가 작성한 리뷰 목록
-  - 찜 목록
-
-#### 실시간 트렌드
+#### [실시간 트렌드](https://www.notion.so/rakyun/f0d66df10d604cbf8f30bcc75a880ffd?pvs=4)
   - 리뷰 데이터 워드 클라우드
   - 장르 별 도서 수 그래프
   - 출간 연도 별 그래프
+
+#### [회원정보 찾기](https://www.notion.so/rakyun/0428b7baba204eb9a9ab1c9a7ff3ea89?pvs=4)
+
+#### [마이페이지](https://www.notion.so/rakyun/185f6ca41e284876ae8555bd35082656?pvs=4)
+  - 내가 작성한 리뷰 목록
+  - 찜 목록
+
+#### [로그아웃](https://www.notion.so/rakyun/3e416ea265a542a891bf631877542862?pvs=4)
