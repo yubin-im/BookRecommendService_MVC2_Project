@@ -30,7 +30,7 @@
 
 
 ## 주요 기능
-#### 로그인(https://www.notion.so/rakyun/2a02ba0d4a6f40f0a4ba143371b7b656?pvs=4)
+#### [로그인](https://www.notion.so/rakyun/2a02ba0d4a6f40f0a4ba143371b7b656?pvs=4)
 
 #### 회원가입
   - 가입 시 관심있는 장르 두가지 선택
