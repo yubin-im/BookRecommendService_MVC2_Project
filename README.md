@@ -1,4 +1,4 @@
-# BookRecommendService_MVC2_Project
+# BookRecommendService_Project
 도서 추천 및 평가 서비스
 
 
